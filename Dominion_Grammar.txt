@@ -1,3 +1,4 @@
+Natural Language Like grammar:
 Verbs[
 Trash,
 Gain,
@@ -5,7 +6,8 @@ Discard,
 Reveal,
 Draw,
 Put,
-Set aside
+Set aside,
+Play
 ]
 What[
 X card,
@@ -31,6 +33,7 @@ Hand,
 
 Quantifiers[
 upto N,
+twice | N times
 ]
 Who[
 each player,
@@ -40,3 +43,5 @@ you/your,
 they/their,
 his/hers
 ]
+Bold Face grammer
+[+|-] N [phase|X card]
