@@ -1,0 +1,29 @@
+DesignDocumentPart1.txt
+1)Domain: card game design
+2) Intended users : card game designers
+2.2) skills: able to represent design elements (cards, content, rules, etc) for their games. No networking or other programming skills other than abstract representation
+3) Goals: automatic generation of client-server interface (or just server api) from implementing their design; rapid prototyping of games; AI and self-playing definition
+4) Existing solutions: don't know of any cross-game tools or langs. Existing card game tools and langs are specific to existing games, not prototyping new ones.
+5) Syntax that supports aspects and elements of the domain
+-- rules, cards, turns, win/lose conditions, events, phases
+-- easy way to compose above elemtns in a structure or framework that the generic client can consume.
+--basic template for a game like GoFish or Dominion
+--Common high level constructs from games (52 card numbered deck, etc)
+6)Runtime features: AI definition from game specification, Server-API execution with generic api calls, Generic client to consume server api (platform independent?), runtime evaluation of generic api definitions.
+7) Networking package / API(TBD)
+8) Prototyping without recreating physical assets or reinvent the wheel; generates playable game program from the respresentation of an idea.
+9) 
+9.1) Use case #1: Convert existing rulebook into unambiguous specification
+a)user have a complete game and they want to encode it in our DSL to generate client and server
+b) Win criteria, Content [card types, cards, actions], phases of a turn
+c) The code we generate is a mix of the static card content, and then the set of apis on those cards, to be consumed by the client.
+
+
+
+Interesting designs questions:
+How to syntactically allow the DSL programmer to specify visibility attributes of a card?
+
+Data structures:
+Card
+Deck
+
