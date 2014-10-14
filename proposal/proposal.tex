@@ -17,7 +17,7 @@
   Matthew Ahrens \& Karl Cronburg \& Raoul Veroy \\
   \affaddr{Tufts University} \\
   \affaddr{Medford, MA}       \\
-  \email{karl@cs.tufts.edu}
+  \email{\{mahrens,karl,rveroy\}@cs.tufts.edu}
 }
 \date{Oct. 13, 2014}
 
@@ -28,29 +28,87 @@ Abstract.
 \end{abstract}
 
 \section{Domain \& Motivation}
+\label{sec:domain}
 % Questions (1) and (2)
+The domain of our language is deck-building card game design. In particular we
+plan to focus on the deck-building terminology and basic rule infrastructure
+used in the game \emph{Dominion} \cite{Vaccarino2008}. We further hope to,
+in future iterations of our DSL, abstract out the specifics of \emph{Dominion}
+resulting in a domain of fully generic deck-building.
+
+The intended users of our DSL are deck-building game designers. The designers
+of such games usually posess artistic skills, so we plan to make the card
+design process as declarative as possible with minimal programming experience
+necessary. However, when more complex card features / abilities are
+desired, the designer will be given direct access to the Haskell run-time
+system of the game.
+
+Such access to the runtime system allows experienced
+programmers to leverage existing general purpose language features they
+are familiar with, while retaining the declarative nature of how cards are
+defined. For less experienced programmers, example implementations of
+existing card features will be made available.
+
+While this ultimately necessitates a rudimentary knowledge of Haskell
+to design non-trivial game features, it also hides the monadic nature of
+the deck-building runtime system.
 
 \section{Existing Tools}
+\label{sec:existing_tools}
 % Question (4)
+As just mentioned in Section \ref{sec:domain}, the primary advantage of our
+plan for a semi-transparent runtime system \footnotemark[1] is that game
+designers have direct access to an existing general purpose programming
+language while hiding the
+monadic implementation of game state transitions. Designers simply specify
+the abilities of a card in a functional manner, and the runtime system does
+the rest.
+
+\footnotetext[1]{The runtime system is transparent in that it gives
+the designer direct access to state variables such as the decks on
+the table and the hands of cards each player is holding. It is
+non-transparent in that the monadic Haskell implementation of state
+transitions will be hidden from the designer.}
+
+In contrast, existing systems for card games in general comprise general
+purpose programming languages. Such languages require considerable
+programming experience. As a result the general trend is for game designers
+to design games by hand, then later employ experienced programmers to
+bring their creations into the digital world. Such a process is ill-suited
+to prototyping and actively developing a deck-building game because the
+designer is not intimately involved in the digitization process.
+
+Furthermore, when we take into account the small age
+of deck-building games (with \emph{Dominion} arguably
+being the classic seminal deck-building game, dating back to only 2008)
+it is no wonder the automated tools and languages for designing and
+prototyping such games simply do not exist.
 
 \section{Goals}
+\label{sec:goals}
 % Question (3)
 % Question (8)
 
 \section{Core Features}
+\label{sec:features}
 \subsection{Language}
+\label{sec:language}
 % Question (5)
 
 \subsection{Run-Time System}
+\label{sec:runtime_system}
 % Question (6)
 
 \section{Use Cases}
+\label{sec:use_cases}
 % Question (9)
 
 \section{Haskell}
+\label{sec:haskell}
 % Question (7)
 
 \section{Evaluation Criteria}
+\label{sec:evaluation}
 % Question (10)
 
 \begin{biblist}
