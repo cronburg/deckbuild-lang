@@ -87,13 +87,36 @@ prototyping such games simply do not exist.
 \section{Goals}
 \label{sec:goals}
 % Question (3)
-% Question (8)
+Physical cards are typically represented in plain english with an ambiguous ruleset 
+for how they react to other cards. Our grammar will encompass the common elements from 
+deck building card games with the primary goal to let game designers prototype new cards
+easily in a lexicon they are comfortable with. The usable product delivered after the 
+designer uses our language will be a method of prototyping their new cards and rulesets
+digitally before they physically make cards. This will be achieved through generating a 
+server instance of the game with an api specification, and a static client that can consume
+any specification made from cards. By using our language, the designer only has to focus on
+designing the rules and relationships between cards in order to generate a playable product.
+The intention is for game designers to quickly iterate over ideas for cards, and test them 
+without writing extensive logic, boilerplate for UI, or physically printing cards in order to 
+get people to playtest.
 
-\section{Core Features}
-\label{sec:features}
+% Question (8)
+Game designers benefit from using our language by being able to define the actions a card
+can perform in the way it would be printed to the player. This is beneficial so that the designer
+can know that the card will behave in a specific way when played with other cards, and it is good for
+the player since unifying the grammar will make the game easier to understand. By generating a server
+from the code written in our language, the game designer does not have to worry about programmatically 
+enforcing the rules they have composed. The automatic generation of a consumable specification for the 
+game server allows generic clients -- such as the one we are going to provide -- to be made in the environment
+and general programming language of choice. If the designer would like a more specialized client for their game,
+then they can simply write the card definitions in our language and have a more experienced programmer write
+only the specialized client in their general purpose language of choice.
+
+
 \subsection{Language}
 \label{sec:language}
 % Question (5)
+
 
 \subsection{Run-Time System}
 \label{sec:runtime_system}
