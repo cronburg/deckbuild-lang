@@ -118,17 +118,38 @@ only the specialized client in their general purpose language of choice.
 % Question (5)
 
 
-\subsection{Run-Time System}
+\subsection{Run-Time System Artifacts \& Use Cases}
 \label{sec:runtime_system}
-% Question (6)
+% Question (6) and (9)
 
-\section{Use Cases}
-\label{sec:use_cases}
-% Question (9)
-\begin{itemize}
-\item Converting existing rulebooks into an unambiguous specifications
-\item 
-\end{itemize}
+As described in Section \ref{sec:goals}, we have various goals for our
+language. Enumerating these goals as specific run-time system use cases
+and corresponding artifacts:
+
+\begin{enumerate}
+% Use case #1 - unambiguous rulebook specification (querying artifact)
+\item Converting existing rulebooks for deck-building games into unambiguous programs written in
+our grammar. Such programs can act as the `ground truth' when it comes to disputes over ambiguous
+language used in the natural-language (English) version of rulebooks. It would thus be useful to
+have a {\bf runtime system which can be queried} about the validity of certain actions given a game state.
+
+% Use case #2 - prototyping deck-building games & running simulations (simulator artifact)
+\item Prototyping combinations of cards to use in a specific instance of a deck-building game.
+Given a particular game designed in our grammar, the game designer will want to determine the
+fairness and variety of strategies available. Thus a useful runtime artifact is a tool for
+running {\bf automated simulations} of actual gameplay.
+
+% Use case #3 - Client-Server artifacts / boiler-plate code (networking artifact)
+\item ... {\bf client-server framework} ...
+
+% Use case #3 - concrete specification language for use by an AI language (AI language artifact)
+\item When human players analyze their gameplay strategies, they use various heuristics.
+These heuristics only exist as a mental model in the human player's mind, meaning their
+robustness cannot be effectively tested. We therefore hope to extend our DSL with probabilistic
+language features for encoding such mental model heuristics into a concise machine-readable form.
+The artifact would then be a {\bf playable AI}.
+
+\end{enumerate}
 
 \section{Haskell}
 \label{sec:haskell}
