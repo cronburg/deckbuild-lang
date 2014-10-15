@@ -30,6 +30,11 @@ Abstract.
 \section{Domain \& Motivation}
 \label{sec:domain}
 % Questions (1) and (2)
+%   What is the domain of your language?
+%
+%   Who are the intended users? What skills do they have and what kind of
+%   programming tasks do they need to accomplish?
+
 The domain of our language is deck-building card game design. In particular we
 plan to focus on the deck-building terminology and basic rule infrastructure
 used in the game \emph{Dominion} \cite{Vaccarino2008}. We further hope to,
@@ -56,6 +61,8 @@ the deck-building runtime system.
 \section{Existing Tools}
 \label{sec:existing_tools}
 % Question (4)
+%   Why are existing languages ill-suited to the task?
+
 As just mentioned in Section \ref{sec:domain}, the primary advantage of our
 plan for a semi-transparent runtime system \footnotemark[1] is that game
 designers have direct access to an existing general purpose programming
@@ -87,6 +94,11 @@ prototyping such games simply do not exist.
 \section{Goals}
 \label{sec:goals}
 % Question (3)
+%   What goals are you trying to accomplish with your design? (For example, the
+%   designers of ESP wanted to make it easier to develop correct, modular code for
+%   firmware while not paying too much of a performance cost.)
+
+
 Physical cards are typically represented in plain english with an ambiguous ruleset 
 for how they react to other cards. Our grammar will encompass the common elements from 
 deck building card games with the primary goal to let game designers prototype new cards
@@ -101,6 +113,10 @@ without writing extensive logic, boilerplate for UI, or physically printing card
 get people to playtest.
 
 % Question (8)
+%   Explain what benefits domain experts will get from using your language. For example, do they get
+%   multiple artifacts from a single program? Can they write substantially less code? Is the code more
+%   likely to be correct or efficient? Can specialized analyses be applied?
+
 Game designers benefit from using our language by being able to define the actions a card
 can perform in the way it would be printed to the player. This is beneficial so that the designer
 can know that the card will behave in a specific way when played with other cards, and it is good for
@@ -116,11 +132,23 @@ only the specialized client in their general purpose language of choice.
 \subsection{Language}
 \label{sec:language}
 % Question (5)
+%   Describe what features your language will provide and give some rationale
+%   for why this set of features is appropriate.
 
 
 \subsection{Run-Time System Artifacts \& Use Cases}
 \label{sec:runtime_system}
 % Question (6) and (9)
+%    Explain what if any services you will need to provide in a "run-time system"
+%
+%    Develop three to four use cases, each of which specifies:
+%    a. The specific task the user is trying to accomplish
+%    b. The information the user would have to supply, perhaps in the form of preliminary syntax for
+%       your language
+%    c. A high-level description of the code you intend to generate from the supplied information. If you
+%       plan to generate multiple artifacts from a single description, you should describe each of them.
+%    d. A brief discussion of why you will have sufficient information to generate the desired
+%       implementation from the user-supplied information.
 
 As described in Section \ref{sec:goals}, we have various goals for our
 language. Enumerating these goals as specific run-time system use cases
@@ -151,13 +179,31 @@ The artifact would then be a {\bf playable AI}.
 
 \end{enumerate}
 
+\subsubsection{Existing Rulebook Syntax}
+% This is a possible future goal for language features
+
+\subsubsection{Card Prototyping Syntax}
+
+\subsubsection{Client-Server API}
+
+\subsubsection{AI Syntax}
+% Future goal
+
 \section{Haskell}
 \label{sec:haskell}
 % Question (7)
+%   What existing Haskell libraries, if any, are you planning to use to support the
+%   domain-specific aspects of your implementation? You don't need to mention
+%   quasi-quotation, template Haskell, or parsing libraries.
 
 \section{Evaluation Criteria}
 \label{sec:evaluation}
 % Question (10)
+%   Sketch a plan for evaluating your design. This plan should include measurable
+%   goals that if achieved would lead you to conclude your design was a success.
+%   (Example goals might be code-size reductions or measured performance overheads,
+%   but many other goals are possible).
+
 
 \begin{biblist}
   \bib{Vaccarino2008}{book}{
