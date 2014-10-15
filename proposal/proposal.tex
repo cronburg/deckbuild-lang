@@ -181,13 +181,42 @@ The artifact would then be a {\bf playable AI}.
 
 \subsubsection{Existing Rulebook Syntax}
 % This is a possible future goal for language features
+\begin{verbatim}
+
+[ Code for declaring the rules of a deck-building game goes here ]
+\end{verbatim}
+
+From this code we can generate a playable runtime system, with sufficient information
+because the game designer has specified the exact mechanics of the game.
 
 \subsubsection{Card Prototyping Syntax}
+\begin{verbatim}
+
+[ Code for declaring / creating new Dominion cards goes here ]
+\end{verbatim}
+
+From this code we also generate a playable runtime system with cards never before
+used in a deck-building game. The information given is sufficient because the
+game designer specifies the exact abilities of each card. In conjunction with the
+rulebook syntax, we also know how the cards interact with the mechanics of the game.
 
 \subsubsection{Client-Server API}
+\begin{verbatim}
 
-\subsubsection{AI Syntax}
+[ Example API usage / list of useful API calls ]
+\end{verbatim}
+
+\subsubsection{Computer Heuristic Syntax}
 % Future goal
+\begin{verbatim}
+
+[ Code for declaring AI heuristics ]
+\end{verbatim}
+
+From this code we can create an interactive runtime system in which one or more of the players
+of the deck-building game are not human. The heuristics defined are sufficient to create a
+computer player because the heuristic programmer specifies exactly what the computer player
+should do based on the current state of the game / run-time system.
 
 \section{Haskell}
 \label{sec:haskell}
