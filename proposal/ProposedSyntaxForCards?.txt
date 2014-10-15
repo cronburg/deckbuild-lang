@@ -1,0 +1,45 @@
+ProposedSyntaxForCards?.txt
+cards {
+	--
+	Festival
+	-
+	creepygnomeguy.jpg
+	-
+	+2 Actions
+	+1 Buy
+	+(2)
+	-
+	(5) | Action
+	--
+
+	--
+	Woodcutter
+	-
+	woodcutter.jpg
+	-
+	+1 Buy
+	+(2)
+	-
+	(3) | Action
+	--
+
+	--
+	MyCustomCard
+	-
+	coolGal.jpg
+	-
+	Draw 4 cards; Discard 2 cards.
+	-
+	(3) | Action
+	--
+
+	--
+	Gold
+	-
+	gold.jpg
+	-
+	(3)
+	-
+	(6) | Treasure
+	--
+}
