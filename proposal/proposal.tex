@@ -168,7 +168,7 @@ fairness and variety of strategies available. Thus a useful runtime artifact is 
 running {\bf automated simulations} of actual gameplay.
 
 % Use case #3 - Client-Server artifacts / boiler-plate code (networking artifact)
-\item ... {\bf client-server framework} ...
+\item a {\bf client-server framework} that will enforce the rules of the game produced will provide a way to test out their games and various card definitions. The designer can easily distribute the game to playtesters as a specficiation consumed by a premade client and by deploying the generated game server. By encapsulating the cards and game rules as a server with an api, a variety of clients can be made to play against playtesters such as GUIs and other skins, or bot clients.
 
 % Use case #3 - concrete specification language for use by an AI language (AI language artifact)
 \item When human players analyze their gameplay strategies, they use various heuristics.
@@ -202,8 +202,7 @@ rulebook syntax, we also know how the cards interact with the mechanics of the g
 
 \subsubsection{Client-Server API}
 \begin{verbatim}
-
-[ Example API usage / list of useful API calls ]
+GET /
 \end{verbatim}
 
 \subsubsection{Computer Heuristic Syntax}
@@ -224,7 +223,9 @@ should do based on the current state of the game / run-time system.
 %   What existing Haskell libraries, if any, are you planning to use to support the
 %   domain-specific aspects of your implementation? You don't need to mention
 %   quasi-quotation, template Haskell, or parsing libraries.
-
+\begin{itemize}
+\item websockets
+\end{itemize}
 \section{Evaluation Criteria}
 \label{sec:evaluation}
 % Question (10)
