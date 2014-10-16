@@ -201,9 +201,24 @@ game designer specifies the exact abilities of each card. In conjunction with th
 rulebook syntax, we also know how the cards interact with the mechanics of the game.
 
 \subsubsection{Client-Server API}
+The designer specifies what phases complete a turn. The default phase keywords they can use are Begin, Action, Buy, Discard, Draw, End. 
 \begin{verbatim}
-GET /
+turn {
+ Begin,Action,Buy,MyCustomPhase,Discard,Draw,End 
+}
 \end{verbatim}
+
+
+If the designer specifies a custom phase, then they must implement the phase section of the program. They may also use this section to override the number of cards that can be played in one turn here.
+
+\begin{verbatim}
+phase{
+  MyCustomPhase 2, Draw 7, Buy 2
+}
+\end{verbatim}
+In the above code, the user is saying that 2 of their custom cards can be played in one turn, the user draws 7 cards (5 is typically default), and can buy 2 cards in one turn by default.
+
+Buy writing these rules, the server generates websocket endpoints for the turn taking and the phases, as well as the validation measures for each phase.
 
 \subsubsection{Computer Heuristic Syntax}
 % Future goal
@@ -257,7 +272,7 @@ should do based on the current state of the game / run-time system.
 %   goals that if achieved would lead you to conclude your design was a success.
 %   (Example goals might be code-size reductions or measured performance overheads,
 %   but many other goals are possible).
-
+Our language is successful if it makes it possible for users to playtest their games simply from card and rule definitions. A metric for our success is the amount of time saved in the iteration cycle for introducing new cards: design, compare to existing cards, introduce into a game, playtest, and fix.
 
 \begin{biblist}
   \bib{Vaccarino2008}{book}{
