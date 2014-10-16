@@ -190,9 +190,24 @@ From this code we can generate a playable runtime system, with sufficient inform
 because the game designer has specified the exact mechanics of the game.
 
 \subsubsection{Card Prototyping Syntax}
+We provide code samples for different kinds of cards. We specifically have to specify the
+treasure card as it is a special card in the game.
+
 \begin{verbatim}
 
-[ Code for declaring / creating new Dominion cards goes here ]
+card Festival {
+    +2 Action
+    +1 Buy
+    +1 Gold
+} costs 5
+
+card Estate {
+    +1 Victory
+} costs 2
+
+card Gold :: Treasure {
+    +3 Gold
+} costs 6
 \end{verbatim}
 
 From this code we also generate a playable runtime system with cards never before
