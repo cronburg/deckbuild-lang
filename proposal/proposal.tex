@@ -229,17 +229,28 @@ player1.action {
   actionPhaseHeuristic =
     let bestAction = mostExpensive $ actions player1Hand
     in case () of
-      _ | actionsLeft > 0 = do {play bestAction; actionPhaseHeuristic}
-        | otherwise       = endActionPhase
+      _ | actionsLeft > 0 = do
+          { play bestAction
+          ; actionPhaseHeuristic
+          }
+        | otherwise = endActionPhase
 }
 
 player1.buy {
+
+  canBuy :: Card -> Bool
+  canBuy c = (cost c) <= player1Coins
+
   buyPhaseHeuristic :: GameState
   buyPhaseHeuristic =
-    let bestBuy = mostExpensive $ filter (\c -> (cost c) <= player1Coins) (actions boardCards)
+    let bestBuy = mostExpensive (
+      filter canBuy (actions boardCards))
     in case () of
-     _ | buysLeft > 0 = do {buy bestBuy; buyPhaseHeuristic}
-       | otherwise    = endBuyPhase
+     _ | buysLeft > 0 = do
+         { buy bestBuy
+         ; buyPhaseHeuristic
+         }
+       | otherwise = endBuyPhase
 }
 
 \end{verbatim}
