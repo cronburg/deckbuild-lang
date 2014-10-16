@@ -179,22 +179,11 @@ The artifact would then be a {\bf playable AI}.
 
 \end{enumerate}
 
-\subsubsection{Existing Rulebook Syntax}
-% This is a possible future goal for language features
-\begin{verbatim}
-
-[ Code for declaring the rules of a deck-building game goes here ]
-\end{verbatim}
-
-From this code we can generate a playable runtime system, with sufficient information
-because the game designer has specified the exact mechanics of the game.
-
 \subsubsection{Card Prototyping Syntax}
 We provide code samples for different kinds of cards. We specifically have to specify the
 treasure card as it is a special card in the game.
 
 \begin{verbatim}
-
 card Festival {
     +2 Action
     +1 Buy
@@ -229,7 +218,7 @@ For now, only symmetric gameplay is allowed. That is, each players turn is the s
 If the designer specifies a custom phase, then they must implement the phase section of the program. They may also use this section to override the number of cards that can be played in one turn here.
 
 \begin{verbatim}
-phase{
+phase {
   MyCustomPhase 2, Draw 7, Buy 2
 }
 \end{verbatim}
@@ -294,8 +283,8 @@ should do based on the current state of the game / run-time system.
 The existing Haskell libraries we plan to use include:
 
 \begin{itemize}
-\item websockets \textendash for the client-server API
-\item Optimization \textendash for the computer player code
+\item websockets \textendash  for the client-server API
+\item Optimization \textendash  for the computer player code
 \end{itemize}
 \section{Evaluation Criteria}
 \label{sec:evaluation}
