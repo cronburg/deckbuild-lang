@@ -215,15 +215,17 @@ used in a deck-building game. The information given is sufficient because the
 game designer specifies the exact abilities of each card. In conjunction with the
 rulebook syntax, we also know how the cards interact with the mechanics of the game.
 
-\subsubsection{Client-Server API}
-The designer specifies what phases complete a turn. The default phase keywords they can use are Begin, Action, Buy, Discard, Draw, End. 
+\subsubsection{Specifying a turn}
+The basic rule of deck building games is the turn. The language comes with inherit rules common to deck building games, but the designer can change and add new parts to a turn to adjust this. These sections of a turn are called phases. The designer specifies what phases and in what order complete a turn. The default phase keywords they can use are Begin, Action, Buy, Discard, Draw, End. 
 \begin{verbatim}
 turn {
  Begin,Action,Buy,MyCustomPhase,Discard,Draw,End 
 }
 \end{verbatim}
 
+For now, only symmetric gameplay is allowed. That is, each players turn is the same.
 
+\subsubsection{Specifying phases in a turn}
 If the designer specifies a custom phase, then they must implement the phase section of the program. They may also use this section to override the number of cards that can be played in one turn here.
 
 \begin{verbatim}
@@ -231,7 +233,7 @@ phase{
   MyCustomPhase 2, Draw 7, Buy 2
 }
 \end{verbatim}
-In the above code, the user is saying that 2 of their custom cards can be played in one turn, the user draws 7 cards (5 is typically default), and can buy 2 cards in one turn by default.
+In the above code, the user is saying that 2 of their custom cards can be played in one turn, the user draws 7 cards (5 is typically default), and can buy 2 cards in one turn by default. It will be taken for granted that all cards can be bought and that phases correspond to types of cards. It is not yet decided how custom logic will be implemented to specify special user-designed phases.
 
 Buy writing these rules, the server generates websocket endpoints for the turn taking and the phases, as well as the validation measures for each phase.
 
