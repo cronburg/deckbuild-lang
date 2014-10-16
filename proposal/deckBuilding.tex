@@ -15,7 +15,11 @@
 \begin{grammar}
 <cards> ::= <card>*
 
-<card>        ::= "card" <cardID> "{" <effects> "}" "costs" <intLit>
+<card>        ::= <nonTreasureCard> | <treasureCard>
+
+<treasureCard> ::= "card" <cardID> ":: Treasure" "{" <moreCoins> "}" "costs" <intLit>
+
+<nonTreasureCard> ::= "card" <cardID> "{" <effects> "}" "costs" <intLit>
 
 <cardID>      ::= <upper><lower>*
 
