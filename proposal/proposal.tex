@@ -209,8 +209,32 @@ GET /
 % Future goal
 \begin{verbatim}
 
-[ Code for declaring AI heuristics ]
+player1.action {
+  actionPhaseHeuristic :: GameState
+  actionPhaseHeuristic =
+    let bestAction = mostExpensive $ actions player1Hand
+    in case () of
+      _ | actionsLeft > 0 = do {play bestAction; actionPhaseHeuristic}
+        | otherwise       = endActionPhase
+}
+
+player1.buy {
+  buyPhaseHeuristic :: GameState
+  buyPhaseHeuristic =
+    let bestBuy = mostExpensive $ filter (\c -> (cost c) <= player1Coins) (actions boardCards)
+    in case () of
+     _ | buysLeft > 0 = do {buy bestBuy; buyPhaseHeuristic}
+       | otherwise    = endBuyPhase
+}
+
 \end{verbatim}
+%[ Code for declaring AI heuristics ]
+
+Note that in this example, many of the variables and functions are not defined directly
+by the programmer. This is because the compiler / interpreter for our language will generate
+many of these based on the {\bf card} and {\bf rulebook} code they write. The player in this
+particular example chooses actions and buys to make based on the expensiveness of the cards
+in their hand and on the board (a greedy heuristic of sorts).
 
 From this code we can create an interactive runtime system in which one or more of the players
 of the deck-building game are not human. The heuristics defined are sufficient to create a
