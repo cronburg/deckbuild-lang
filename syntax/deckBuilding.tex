@@ -1,0 +1,55 @@
+\documentclass{article}
+\title{Deck-Building Card Game Grammar}
+\usepackage{fullpage}
+\usepackage{syntax}
+\author{Raoul Veroy, Matthew Ahrens, Karl Cronburg}
+\date{October 14, 2014}
+% Borrowed from the PADS grammar file.
+\setlength{\grammarindent}{6em}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{grammar}
+<cards> ::= <card>*
+
+<card>        ::= <nonTreasureCard> | <treasureCard>
+
+<treasureCard> ::= "card" <cardID> ":: Treasure" "{" <moreCoins> "}" "costs" <intLit>
+
+<nonTreasureCard> ::= "card" <cardID> "{" <effects> "}" "costs" <intLit>
+
+<cardID>      ::= <upper><lower>*
+
+<effects>     ::= <moreAction> | <moreCoins> | <moreBuys> | <moreVictory>  | <lessVictory>
+
+<moreAction>  ::= "+", <intLit> "action"  
+
+<moreCoins>   ::= "+", <intLit> "coins"  
+
+<moreBuys>    ::= "+", <intLit> "buys"  
+
+<moreVictory> ::= "+", <intLit> "Victory"  
+
+<lessVictory> ::= "-", <intLit> "Victory"  
+
+<intLit>      ::= As defined in Text.Parsec.Token
+
+% Note that we don't actually need to specify the type as that is implied by the
+% action
+% Maybe add these back? Not sure if we need these. - Raoul
+%
+% <charLit> ::=  As defined in Text.Parsec.Token
+% 
+% <stringLit>  ::= As defined in Text.Parsec.Token
+% 
+% <identifier> ::= As defined in Text.Parsec.Token
+% 
+% <whiteSpace> :: As defined in Text.Parsec.Token
+\end{grammar}
+
+\end{document}
+
+
