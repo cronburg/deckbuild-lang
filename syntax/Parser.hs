@@ -1,4 +1,5 @@
 module MonadParser where
+import Text.ParserCombinators.Parsec
 import Data.Char        -- Provides isDigit and isSpace functions
 
 {- 
@@ -13,12 +14,6 @@ instance Functor Parser where
 instance Applicative Parser where
     pure  = return
     (<*>) = ap
-instance Functor Hopefully where
-    fmap = liftM
-instance Applicative Hopefully where
-    pure  = return
-    (<*>) = ap
-
 
 
 {- This obviously has to change: - RLV
@@ -90,13 +85,18 @@ bindParser p k = undefined
 {- To start parsing our expressions, we'll need a way to parse a ????? - RLV. -}
 
 
+----------------------------------------------------------------------------------------
+-- Hopefully monad (error conditions)
 
-{-
-   I think we need the following. - RLV
--}
+-- I think we need the following. - RLV
 instance Monad Hopefully where 
   return = Ok
   (>>=)  = ifOKthen
+instance Functor Hopefully where
+    fmap = liftM
+instance Applicative Hopefully where
+    pure  = return
+    (<*>) = ap
 
 ifOKthen :: Hopefully a -> (a -> Hopefully b) -> Hopefully b
 e `ifOKthen` k = 
