@@ -1,0 +1,47 @@
+Natural Language Like grammar:
+Verbs[
+Trash,
+Gain,
+Discard,
+Reveal,
+Draw,
+Put,
+Set aside,
+Play
+]
+What[
+X card,
+N X cards,
+Any card,
+This card,
+A card,
+It -- last card you specified,
+Cards
+]
+Conditional[
+Costing (quantifier),
+on (who) (source)
+until (expr)
+downto N / until equal N
+May
+]
+Sources(from|to)[
+Deck,
+DiscardPile,
+Hand,
+]
+
+Quantifiers[
+upto N,
+twice | N times
+]
+Who[
+each player,
+every opponent,
+one opponent,
+you/your,
+they/their,
+his/hers
+]
+Bold Face grammer
+[+|-] N [phase|X card]
