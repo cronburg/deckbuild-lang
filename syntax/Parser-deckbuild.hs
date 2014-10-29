@@ -1,4 +1,4 @@
-module PCParser where
+module DeckBuildParser where
 import Text.ParserCombinators.Parsec
 import qualified Text.Parsec.String as PS
 import qualified Text.Parsec.Prim   as PP
@@ -17,14 +17,15 @@ actionKW   = string "Action"
 victoryKW  = string "Victory"
 -}
 
-data CardType   = TREASURE | ACTION | VICTORY
-data EffectType = 
+data CardType   = TREASURE | ACTION  | VICTORY
+data EffectType = MONEY    | ACTIONS | BUYS
+type CardID     = String
 
-data Card = Card CardType CardDescr CardCost
+data Card = Card CardID CardType CardDescr CardCost
 data CardDescr = CardDescr UpperDescr LowerDescr
 type UpperDescr = String
-data LowerDescr = [Effect]
-type Effect = (Integer,
+type LowerDescr = [Effect]
+type Effect = (Integer,EffectType)
 type CardCost = Integer
 
 (<||>) a b = try a <|> try b
@@ -33,18 +34,49 @@ type CardCost = Integer
 cardFile = many cardDecl
 
 -- A card declaration:
-cardDecl = reserved "card" >> cardID >> reserved "::" >> cardType >>
-           braces cardDescr >> reserved "costs" >> integer
+cardDecl = do
+  reserved "card"; cID <- cardID;
+  reserved "::";   cTY <- cardType;
+  descr <- braces cardDescr;
+  reserved "costs"; cost <- integer;
+  return $ Card cID cTY descr cost
 
-cardType = reserved "Treasure" <|> reserved "Action" <|> reserved "Victory"
+cType s = do
+  reserved s;
+  return (case s of
+    "Treasure" -> TREASURE
+    "Action"   -> ACTION
+    "Victory"  -> VICTORY)
+
+cardType = cType "Treasure" <||> cType "Action" <||> cType "Victory"
 
 cardID = identifier
 
-cardDescr = upperDescr >> many lowerDescr
+cardDescr = do
+  d1 <- upperDescr;
+  d2 <- many effectDescr;
+  return $ CardDescr d1 d2
+
+eType s = do
+  reserved s;
+  return (case s of
+    "actions" -> ACTIONS
+    "coins"   -> MONEY
+    "buys"    -> BUYS)
+
+signValue :: String -> Integer
+signValue s = do
+  reserved s;
+  return (case s of
+    "+" -> 1
+    "-" -> -1)
+
 upperDescr = stringLiteral
-lowerDescr = (reserved "+" <||> reserved "-") >> integer >>
-             (reserved "actions" <||> reserved "coins" <||>
-              reserved "buys" <||> reserved "victory")
+effectDescr = do
+  sign   <- (signValue "+" <||> signValue "-");
+  i      <- integer;
+  effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
+  return $ ((*) sign i, effect)
 
 ------------------------------------------------------------------------------
 -- Lexer
@@ -54,7 +86,6 @@ lexer = PT.makeTokenParser (haskellStyle
     reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
                        "Victory"]
   })
-
 
 --"=", "=>", "{", "}", "::", "<|", "|>", "|", reMark, "." ],
 --"data", "type", "newtype", "old", "existing", "deriving",
