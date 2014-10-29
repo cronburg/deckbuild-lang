@@ -36,7 +36,7 @@
 <lessVictory> ::= "-", <intLit> "Victory"  
 
 %named turns in the proposal
-<phases> ::= "{"[<phase> <intCards>]* "}"
+<phases> ::= "{"(<phase> <intCards>)* "}"
 
 % let's not let users specify custom phases, but rather just the order and magnitude of existing ones 
 <phase> ::= "action" | "buy" | "discard" | "draw"
