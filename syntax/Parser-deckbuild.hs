@@ -8,14 +8,8 @@ import Data.Char        -- Provides isDigit and isSpace functions
 
 type Parser = PS.Parser
 
--- Keywords (KW == Keyword):
-{-cardKW     = string "card"
-actionKW   = string "action"
-costsKW    = string "costs"
-treasureKW = string "Treasure"
-actionKW   = string "Action"
-victoryKW  = string "Victory"
--}
+------------------------------------------------------------------------------
+-- Data types and type aliases for a simple deck-building game (Dominion-like)
 
 data CardType   = TREASURE | ACTION  | VICTORY deriving (Show)
 data EffectType = MONEY    | ACTIONS | BUYS    deriving (Show)
@@ -28,7 +22,13 @@ type LowerDescr = [Effect]
 type Effect = (Integer,EffectType)
 type CardCost = Integer
 
+
+------------------------------------------------------------------------------
+-- Or-Try Combinator (tries two parsers, one after the other)
 (<||>) a b = try a <|> try b
+
+------------------------------------------------------------------------------
+-- Parser functions for our language
 
 -- A card definition file has 0 or more card declarations:
 cardFile = many cardDecl
@@ -41,6 +41,8 @@ cardDecl = do
   reserved "costs"; cost <- integer;
   return $ Card cID cTY descr cost
 
+-- Attempts to parse the given reserved string card type keyword,
+-- returning the corresponding CardType
 cType s = do
   reserved s;
   return (case s of
@@ -48,15 +50,20 @@ cType s = do
     "Action"   -> ACTION
     "Victory"  -> VICTORY)
 
+-- Tries to parse different card types one-by-one
 cardType = cType "Treasure" <||> cType "Action" <||> cType "Victory"
 
+-- The name (ID) of a card is just a regular identifier
 cardID = identifier
 
+-- Parse the description on a card
 cardDescr = do
-  d1 <- upperDescr;
-  d2 <- many effectDescr;
+  d1 <- many effectDescr;
+  d2 <- englishDescr;
   return $ CardDescr d1 d2
 
+-- Attempts to parse the given reserved string effect keyword,
+-- returning the corresponding EffectType
 eType s = do
   reserved s;
   return (case s of
@@ -64,13 +71,18 @@ eType s = do
     "coins"   -> MONEY
     "buys"    -> BUYS)
 
+-- Returns (+1) if "+" is parsed, or (-1) if "-" is parsed
 signValue s = do
   reserved s;
   return (case s of
     "+" -> 1
     "-" -> -1)
 
-upperDescr = stringLiteral
+-- Lower-half description of a card (non-bold-text), is just a literal
+-- string for now (presumably in English)
+englishDescr = stringLiteral
+
+-- Parses effect (upper-half) description of a card (bold-face-text)
 effectDescr = do
   sign   <- (signValue "+" <||> signValue "-");
   i      <- integer;
@@ -85,11 +97,6 @@ lexer = PT.makeTokenParser (haskellStyle
     reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
                        "Victory"]
   })
-
---"=", "=>", "{", "}", "::", "<|", "|>", "|", reMark, "." ],
---"data", "type", "newtype", "old", "existing", "deriving",
---                       "using", "where", "terminator", "length", "of", "from",
---                       "case", "constrain", "obtain", "partition","value" ]}) 
 
 whiteSpace    = PT.whiteSpace  lexer
 identifier    = PT.identifier  lexer
