@@ -35,6 +35,15 @@
 
 <lessVictory> ::= "-", <intLit> "Victory"  
 
+%named turns in the proposal
+<phases> ::= "{"[<phase> <intCards>]* "}"
+
+% let's not let users specify custom phases, but rather just the order and magnitude of existing ones 
+<phase> ::= "action" | "buy" | "discard" | "draw"
+
+<intCards> ::= <intLit> | "all"
+
+% looks like: phases {Action 1 Buy 1 Discard all Draw 5} for standard rules.
 <intLit>      ::= As defined in Text.Parsec.Token
 
 % Note that we don't actually need to specify the type as that is implied by the
