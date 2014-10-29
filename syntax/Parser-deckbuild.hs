@@ -17,12 +17,12 @@ actionKW   = string "Action"
 victoryKW  = string "Victory"
 -}
 
-data CardType   = TREASURE | ACTION  | VICTORY
-data EffectType = MONEY    | ACTIONS | BUYS
+data CardType   = TREASURE | ACTION  | VICTORY deriving (Show)
+data EffectType = MONEY    | ACTIONS | BUYS    deriving (Show)
 type CardID     = String
 
-data Card = Card CardID CardType CardDescr CardCost
-data CardDescr = CardDescr UpperDescr LowerDescr
+data Card = Card CardID CardType CardDescr CardCost deriving (Show)
+data CardDescr = CardDescr UpperDescr LowerDescr    deriving (Show)
 type UpperDescr = String
 type LowerDescr = [Effect]
 type Effect = (Integer,EffectType)
@@ -64,7 +64,6 @@ eType s = do
     "coins"   -> MONEY
     "buys"    -> BUYS)
 
-signValue :: String -> Integer
 signValue s = do
   reserved s;
   return (case s of
