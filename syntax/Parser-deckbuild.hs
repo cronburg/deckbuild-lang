@@ -16,10 +16,10 @@ data EffectType = MONEY    | ACTIONS | BUYS    deriving (Show)
 type CardID     = String
 
 data Card = Card CardID CardType CardDescr CardCost deriving (Show)
-data CardDescr = CardDescr UpperDescr LowerDescr    deriving (Show)
-type UpperDescr = String
-type LowerDescr = [Effect]
-type Effect = (Integer,EffectType)
+data CardDescr = CardDescr { primary :: [ Effect ]
+                           , other :: String } deriving (Show)
+data Effect = Effect { amount :: Integer
+                     , effectType :: EffectType } deriving (Show)
 type CardCost = Integer
 
 
@@ -35,11 +35,14 @@ cardFile = many cardDecl
 
 -- A card declaration:
 cardDecl = do
-  reserved "card"; cID <- cardID;
-  reserved "::";   cTY <- cardType;
-  descr <- braces cardDescr;
-  reserved "costs"; cost <- integer;
-  return $ Card cID cTY descr cost
+  { reserved "card"
+  ; cID <- cardID
+  ; reserved "::"
+  ; cTY <- cardType
+  ; descr <- braces cardDescr
+  ; reserved "costs"
+  ; cost <- integer
+  ; return $ Card cID cTY descr cost }
 
 -- Attempts to parse the given reserved string card type keyword,
 -- returning the corresponding CardType
@@ -58,25 +61,25 @@ cardID = identifier
 
 -- Parse the description on a card
 cardDescr = do
-  d1 <- many effectDescr;
-  d2 <- englishDescr;
-  return $ CardDescr d1 d2
+  { d1 <- many effectDescr
+  ; d2 <- englishDescr
+  ; return $ CardDescr { primary = d1, other = d2 } }
 
 -- Attempts to parse the given reserved string effect keyword,
 -- returning the corresponding EffectType
 eType s = do
-  reserved s;
-  return (case s of
-    "actions" -> ACTIONS
-    "coins"   -> MONEY
-    "buys"    -> BUYS)
+  { reserved s
+  ; return (case s of
+              "actions" -> ACTIONS
+              "coins"   -> MONEY
+              "buys"    -> BUYS) }
 
 -- Returns (+1) if "+" is parsed, or (-1) if "-" is parsed
 signValue s = do
-  reserved s;
-  return (case s of
-    "+" -> 1
-    "-" -> -1)
+  { reserved s
+  ; return (case s of
+            "+" -> 1
+            "-" -> -1) }
 
 -- Lower-half description of a card (non-bold-text), is just a literal
 -- string for now (presumably in English)
@@ -84,10 +87,10 @@ englishDescr = stringLiteral
 
 -- Parses effect (upper-half) description of a card (bold-face-text)
 effectDescr = do
-  sign   <- (signValue "+" <||> signValue "-");
-  i      <- integer;
-  effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
-  return $ ((*) sign i, effect)
+  { sign   <- (signValue "+" <||> signValue "-")
+  ; i      <- integer
+  ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
+  ; return $ Effect { amount = sign * i, effectType = effect } }
 
 ------------------------------------------------------------------------------
 -- Lexer
