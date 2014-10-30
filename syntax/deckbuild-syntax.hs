@@ -24,8 +24,8 @@ type CardCost = Integer
 
 data Turn = Turn [PhaseQuant]
 	deriving (Eq, Data, Typeable, Show)
-data PhaseQuant = PhaseQuant {phase :: Phase
-								, amountP :: Integer}
+data PhaseQuant = PhaseQuant {phase   :: Phase
+                            , amountP :: Integer}
 	deriving (Eq, Data, Typeable, Show)
 data Phase = ActionP  | BuyP  | DiscardP | DrawP 
  	deriving (Eq, Data, Typeable, Show)
