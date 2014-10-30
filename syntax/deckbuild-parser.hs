@@ -6,22 +6,9 @@ import qualified Text.Parsec.Token  as PT
 import Text.ParserCombinators.Parsec.Language (haskellStyle, reservedOpNames, reservedNames)
 import Data.Char        -- Provides isDigit and isSpace functions
 
+import Language.DeckBuild.Syntax
+
 type Parser = PS.Parser
-
-------------------------------------------------------------------------------
--- Data types and type aliases for a simple deck-building game (Dominion-like)
-
-data CardType   = TREASURE | ACTION  | VICTORY deriving (Show)
-data EffectType = MONEY    | ACTIONS | BUYS    deriving (Show)
-type CardID     = String
-
-data Card = Card CardID CardType CardDescr CardCost deriving (Show)
-data CardDescr = CardDescr { primary :: [ Effect ]
-                           , other :: String } deriving (Show)
-data Effect = Effect { amount :: Integer
-                     , effectType :: EffectType } deriving (Show)
-type CardCost = Integer
-
 
 ------------------------------------------------------------------------------
 -- Or-Try Combinator (tries two parsers, one after the other)
