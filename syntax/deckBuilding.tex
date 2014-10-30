@@ -13,50 +13,49 @@
 \thispagestyle{empty}
 
 \begin{grammar}
-<cards> ::= <card>*
+% -----------------------------------------------------------------------------
+% - Card declaration grammar rules:
 
-<card>        ::= <nonTreasureCard> | <treasureCard>
+<cardDecl>    ::= "card" <cardID> "::" <cardType> "{" <effect>* "}" "costs" <intLit>
 
-<treasureCard> ::= "card" <cardID> ":: Treasure" "{" <moreCoins> "}" "costs" <intLit>
+<effect>      ::= <plusOrMinus><intLit> <keyword>
 
-<nonTreasureCard> ::= "card" <cardID> "{" <effects> "}" "costs" <intLit>
+<plusOrMinus> ::= "+" | "-"
 
-<cardID>      ::= <upper><lower>*
+% -----------------------------------------------------------------------------
+% - Phase / rulebook declaration grammar rules:
+% -   TODO: custom named phases (future)
 
-<effects>     ::= <moreAction> | <moreCoins> | <moreBuys> | <moreVictory>  | <lessVictory>
+<rulesDecl> ::= "rules" <rulesID> "{" <phase>* "}"
 
-<moreAction>  ::= "+", <intLit> "action"  
+<phase>     ::= <phaseName> <phaseInt>
 
-<moreCoins>   ::= "+", <intLit> "coins"  
-
-<moreBuys>    ::= "+", <intLit> "buys"  
-
-<moreVictory> ::= "+", <intLit> "Victory"  
-
-<lessVictory> ::= "-", <intLit> "Victory"  
-
-%named turns in the proposal
-<phases> ::= "{"(<phase> <intCards>)* "}"
-
-% let's not let users specify custom phases, but rather just the order and magnitude of existing ones 
-<phase> ::= "action" | "buy" | "discard" | "draw"
-
-<intCards> ::= <intLit> | "all"
+<phaseInt>  ::= <intLit> | "all"
 
 % looks like: phases {Action 1 Buy 1 Discard all Draw 5} for standard rules.
+<keyword>     ::= "action"   | "coins"  | "buys"    | "Victory"
+
+<cardType>    ::= "Treasure" | "Action" | "Victory"
+
+<phaseName>   ::= "action"   | "buy"    | "discard" | "draw"
+
+<*ID>         ::= <identifier>
+
 <intLit>      ::= As defined in Text.Parsec.Token
+
+<identifier>  ::= As defined in Text.Parsec.Token
 
 % Note that we don't actually need to specify the type as that is implied by the
 % action
 % Maybe add these back? Not sure if we need these. - Raoul
 %
-% <charLit> ::=  As defined in Text.Parsec.Token
-% 
+% <charLit>    ::= As defined in Text.Parsec.Token
+%
 % <stringLit>  ::= As defined in Text.Parsec.Token
-% 
+%
 % <identifier> ::= As defined in Text.Parsec.Token
-% 
-% <whiteSpace> :: As defined in Text.Parsec.Token
+%
+% <whiteSpace> ::= As defined in Text.Parsec.Token
 \end{grammar}
 
 \end{document}
