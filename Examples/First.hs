@@ -38,5 +38,3 @@ tests = TestList[ TestLabel "Literal"  whiteSpace_test
 -- whiteSpace_expects = ((12,34),0,"")
 -- whiteSpace_test = mkTestCase "regular expression literal" whiteSpace_expects whiteSpace_result
 
-
-

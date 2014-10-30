@@ -3,6 +3,7 @@ import Text.ParserCombinators.Parsec
 import qualified Text.Parsec.String as PS
 import qualified Text.Parsec.Prim   as PP
 import qualified Text.Parsec.Token  as PT
+import qualified Text.Parsec.Expr as PE
 import Text.ParserCombinators.Parsec.Language (haskellStyle, reservedOpNames, reservedNames)
 import Data.Char        -- Provides isDigit and isSpace functions
 
@@ -61,12 +62,6 @@ eType s = do
               "coins"   -> MONEY
               "buys"    -> BUYS) }
 
--- Returns (+1) if "+" is parsed, or (-1) if "-" is parsed
-signValue s = do
-  { reserved s
-  ; return (case s of
-            "+" -> 1
-            "-" -> -1) }
 
 -- Lower-half description of a card (non-bold-text), is just a literal
 -- string for now (presumably in English)
@@ -74,10 +69,10 @@ englishDescr = stringLiteral
 
 -- Parses effect (upper-half) description of a card (bold-face-text)
 effectDescr = do
-  { sign   <- (signValue "+" <||> signValue "-")
-  ; i      <- integer
+  { PP.lookAhead (char '+' <||> char '-')
+  ; amount <- expr
   ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
-  ; return $ Effect { amount = sign * i, effectType = effect } }
+  ; return $ Effect { amount = amount, effectType = effect } }
 
 ------------------------------------------------------------------------------
 -- Lexer
@@ -96,8 +91,16 @@ reservedOp    = PT.reservedOp  lexer
 charLiteral   = PT.charLiteral lexer
 stringLiteral = PT.stringLiteral  lexer
 integer       = PT.integer     lexer
+natural       = PT.natural     lexer
 commaSep1     = PT.commaSep1   lexer
 parens        = PT.parens      lexer
 braces        = PT.braces      lexer
 brackets      = PT.brackets    lexer
 
+expr = PE.buildExpressionParser table term
+       <?> "expression"
+term = natural
+       <?> "simple expression"
+table = [ [prefix "-" negate, prefix "+" id ] ]
+prefix   name fun = PE.Prefix ( do { reservedOp name
+                                   ; return fun } )
