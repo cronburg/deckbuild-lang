@@ -78,6 +78,36 @@ effectDescr = do
   ; i      <- integer
   ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
   ; return $ Effect { amount = sign * i, effectType = effect } }
+-----------------------------
+-- turns and phases
+
+-- returns a Turn
+turnDecl = do
+{ 
+  reserved "turn"
+  ; phases <- braces (many phaseQDescr)
+  ; return $ Turn phases
+}
+
+phaseQDescr = do
+{
+    phase <- phaseDescr
+  ; amount <- integer
+  ; return $ PhaseQuant phase amount
+}
+
+phaseDescr = do
+{ phase <- (phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw")
+  ; return phase
+
+}
+
+phaseType s = do
+  { return (case s of
+              "action"  -> ActionP
+              "buy"     -> BuyP
+              "discard" -> DiscardP
+              "draw"    -> DrawP) }
 
 ------------------------------------------------------------------------------
 -- Lexer
@@ -85,7 +115,7 @@ lexer :: PT.TokenParser ()
 lexer = PT.makeTokenParser (haskellStyle 
   { reservedOpNames = ["::", "{", "}", "+", "-"],
     reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
-                       "Victory"]
+                       "Victory","turn"]
   })
 
 whiteSpace    = PT.whiteSpace  lexer
