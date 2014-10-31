@@ -1,0 +1,10 @@
+-- Program.example.txt - what we want this to be eventually
+turn Dominion_Standard { action 1 buy 1 discard all draw 5 }
+
+card Village :: Action { +1 actions +2 buys "awesome village" } costs 3
+
+card House :: Action { +2 actions +1 coins "Draw cards until you draw a victory" } costs 5
+
+card Parliament :: Action { +5 actions -3 buys "Take two turns" } costs 8
+
+card MeadHall :: Action { -1 actions -1 coins +2 buys "Brawl and drawl" } costs 4
