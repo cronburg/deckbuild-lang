@@ -1,4 +1,4 @@
-module DeckBuildParser where
+module Language.DeckBuild.Parser where
 import Text.ParserCombinators.Parsec
 import qualified Text.Parsec.String as PS
 import qualified Text.Parsec.Prim   as PP

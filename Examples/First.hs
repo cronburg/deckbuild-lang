@@ -3,38 +3,29 @@
              DeriveDataTypeable, ScopedTypeVariables #-}
 
 module Examples.First where
--- TODO
--- import Language.DeckBuild.DeckBuildc
--- import Language.DeckBuild.Testing
 
 import System.IO.Unsafe (unsafePerformIO)
-import Data.Char as Char
-import qualified Data.ByteString as B
-import Data.Word
+import Test.HUnit hiding (test)
+import Text.ParserCombinators.Parsec
 
-ws = REd "[\t ]+|$" " "
+-- Importing the following was the most convenient.
+-- Until we figure out the better way to do it, if at all.
+import Language.DeckBuild.Syntax
+import Language.DeckBuild.Parser
 
 -- Regression expects to be run from the Examples directory.
 test = runTestTT tests
 
 
-tests = TestList[ TestLabel "Literal"  whiteSpace_test
-                , TestLabel "Literal"  whiteSpace2_test
-                ]
+tests = TestList[ TestLabel "Card01"  card01_test ]
 
-[deck|  |]
-
---
--- Code copied from the PADS test file. TODO
---
--- [deck| type IntPair = (Int, '|', Int) |]
--- intPair_result = intPair_parseS "12|23"
--- intPair_expects =  ((12,23), 0,"")
--- intPair_test = mkTestCase "intPair" intPair_expects intPair_result
--- 
--- [deck| type WhiteSpace = (Int, '[ \t]+', Int) |]
--- whiteSpace_input = "12      34"
--- whiteSpace_result = whiteSpace_parseS whiteSpace_input
--- whiteSpace_expects = ((12,34),0,"")
--- whiteSpace_test = mkTestCase "regular expression literal" whiteSpace_expects whiteSpace_result
+card01_result = let result = parse cardFile "" "card Village :: Action { +1 actions -3 buys \"awesome village\" } costs 3"
+                    in case result of
+                        Right x -> x
+                        Left _ -> []            
+card01_expects = [ Card "Village" ACTION (CardDescr { primary = [ Effect { amount = 1, effectType = ACTIONS},
+                                                                   Effect {amount = -3, effectType = BUYS } ],
+                                                       other = "awesome village"}) 3 ]
+card01_test = TestCase $ assertEqual
+     "card01" card01_expects card01_result
 
