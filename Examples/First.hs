@@ -76,4 +76,13 @@ card05_expects = [ Card "Village5" ACTION (CardDescr { primary = [ Effect { amou
                                                        other = "awesome village"}) 3 ]
 card05_test = TestCase $ assertEqual
      "card05" card05_expects card05_result
+--standard Dominion turn ruleset     
+turn01_result = let result = parse turnDecl "" "turn Dominion_Standard { action 1 buy 1 discard all draw 5 }"
+                in case result of
+                   Right x -> x
+                   Left _ -> Turn "" []
+
+turn01_expects = (Turn "Dominion_Standard" [Phase ActionP (PhaseInt 1),Phase BuyP (PhaseInt 1),Phase DiscardP All,Phase DrawP (PhaseInt 5)])
+turn01_test = TestCase $ assertEqual 
+    "turn01" turn01_expects turn01_result
 

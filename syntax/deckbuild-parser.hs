@@ -73,6 +73,52 @@ effectDescr = do
   ; amount <- expr
   ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
   ; return $ Effect { amount = amount, effectType = effect } }
+---------------
+-- Custom Rules Parsing
+
+-- placeholder
+ruleFile = many turnDecl
+
+-- returns a Turn'
+
+turnDecl = do
+{ reserved "turn"
+  ; tID <- turnID
+  ; phases <- braces (many phaseDescr)
+  ; return $ Turn tID phases
+}
+
+turnID = identifier
+
+phaseDescr = do
+{ phase <- phaseNameDescr
+  ; amount <- phaseAmountType "all" <||> phaseAmountIntegerType
+  ; return $ Phase phase amount
+}
+
+phaseNameDescr = do
+{ phase <- (phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw")
+  ; return phase
+
+}
+phaseAmountType s = do
+{ reserved s
+  ; return (case s of
+          "all" -> All)}
+phaseAmountIntegerType = do
+{ i <- integer
+  ; return $ PhaseInt i
+  
+}
+
+
+phaseType s = do
+  { reserved s
+    ; return (case s of
+              "action"  -> ActionP
+              "buy"     -> BuyP
+              "discard" -> DiscardP
+              "draw"    -> DrawP) }
 
 ------------------------------------------------------------------------------
 -- Lexer
@@ -80,7 +126,7 @@ lexer :: PT.TokenParser ()
 lexer = PT.makeTokenParser (haskellStyle 
   { reservedOpNames = ["::", "{", "}", "+", "-"],
     reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
-                       "Victory"]
+                       "Victory","turn","all","buy","discard","draw"]
   })
 
 whiteSpace    = PT.whiteSpace  lexer

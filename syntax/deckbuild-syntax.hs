@@ -22,6 +22,16 @@ data Effect = Effect { amount :: Integer
     deriving (Eq, Data, Typeable, Show)
 type CardCost = Integer
 
+type TurnID = String
+
+data Turn = Turn TurnID [Phase]
+	deriving (Eq, Data, Typeable, Show)
+data Phase = Phase PhaseName PhaseInt
+    deriving (Eq, Data, Typeable, Show)
+data PhaseInt = PhaseInt Integer | All
+	deriving (Eq, Data, Typeable, Show)
+data PhaseName = ActionP  | BuyP  | DiscardP | DrawP 
+ 	deriving (Eq, Data, Typeable, Show)
 -- Do we need this? -- RLV
 -- qName :: QString -> String
 -- qName [n] = n
