@@ -101,7 +101,8 @@ phaseNameDescr = do
 
 }
 phaseAmountType s = do
-{ return (case s of
+{ reserved s
+  ; return (case s of
           "all" -> All)}
 phaseAmountIntegerType = do
 { i <- integer
@@ -111,7 +112,8 @@ phaseAmountIntegerType = do
 
 
 phaseType s = do
-  { return (case s of
+  { reserved s
+    ; return (case s of
               "action"  -> ActionP
               "buy"     -> BuyP
               "discard" -> DiscardP
@@ -123,7 +125,7 @@ lexer :: PT.TokenParser ()
 lexer = PT.makeTokenParser (haskellStyle 
   { reservedOpNames = ["::", "{", "}", "+", "-"],
     reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
-                       "Victory","turn"]
+                       "Victory","turn","all","buy","discard","draw"]
   })
 
 whiteSpace    = PT.whiteSpace  lexer
