@@ -24,9 +24,9 @@
 
 % -----------------------------------------------------------------------------
 % - Phase / rulebook declaration grammar rules:
-% -   TODO: custom named phases (future)
+% -   TODO: custom named phases (future), rulebook for custom rules other than turns
 
-<rulesDecl> ::= "rules" <rulesID> "{" <phase>* "}"
+<turnDecl> ::= "turn" <turnID> "{" <phase>* "}"
 
 <phase>     ::= <phaseName> <phaseInt>
 
