@@ -1,11 +1,12 @@
 
-PDFS=deckBuilding.pdf
+PDFS=grammar.pdf
 
 all: $(PDFS)
 
-deckBuilding.pdf: deckBuilding.tex
-	pdflatex deckBuilding.tex
-	pdflatex deckBuilding.tex
+grammar.pdf: deckbuild-grammar.tex
+	pdflatex deckbuild-grammar.tex
+	pdflatex deckbuild-grammar.tex
+	mv deckbuild-grammar.pdf grammar.pdf
 
 clean:
 	rm -f *.aux *.log $(PDFS)
