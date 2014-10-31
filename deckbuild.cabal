@@ -17,7 +17,7 @@ extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Parser, Examples.Card01, Examples.Turn01, Examples.First
+  exposed-modules:     Examples.First
   -- other-modules:       
   other-extensions:    TypeSynonymInstances, TemplateHaskell, QuasiQuotes,
                        MultiParamTypeClasses, FlexibleInstances, UndecidableInstances, 
