@@ -26,3 +26,6 @@
 # Vim files
 .*swp
 .*swo
+
+# ignore PDF files
+*.pdf
