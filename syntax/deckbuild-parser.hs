@@ -85,22 +85,30 @@ effectDescr = do
 turnDecl = do
 { 
   reserved "turn"
-  ; phases <- braces (many phaseQDescr)
+  ; phases <- braces (many phaseDescr)
   ; return $ Turn phases
 }
 
-phaseQDescr = do
-{
-    phase <- phaseDescr
-  ; amount <- integer
-  ; return $ PhaseQuant phase amount
+phaseDescr = do
+{ phase <- phaseNameDescr
+  ; amount <- phaseAmountType "all" <||> phaseAmountIntegerType
+  ; return $ Phase phase amount
 }
 
-phaseDescr = do
+phaseNameDescr = do
 { phase <- (phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw")
   ; return phase
 
 }
+phaseAmountType s = do
+{ return (case s of
+          "all" -> All)}
+phaseAmountIntegerType = do
+{ i <- integer
+  ; return $ PhaseInt i
+  
+}
+
 
 phaseType s = do
   { return (case s of
