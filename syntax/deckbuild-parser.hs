@@ -79,15 +79,21 @@ effectDescr = do
   ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
   ; return $ Effect { amount = sign * i, effectType = effect } }
 -----------------------------
--- turns and phases
+-- Custom Rules
 
--- returns a Turn
+-- placeholder
+ruleFile = many turnDecl
+
+-- returns a Turn'
+
 turnDecl = do
-{ 
-  reserved "turn"
+{ reserved "turn"
+  ; tID <- turnID
   ; phases <- braces (many phaseDescr)
-  ; return $ Turn phases
+  ; return $ Turn tID phases
 }
+
+turnID = identifier
 
 phaseDescr = do
 { phase <- phaseNameDescr

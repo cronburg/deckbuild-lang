@@ -21,7 +21,10 @@ data Effect = Effect { amount :: Integer
                      , effectType :: EffectType }
     deriving (Eq, Data, Typeable, Show)
 type CardCost = Integer
-data Turn = Turn [Phase]
+
+type TurnID = String
+
+data Turn = Turn TurnID [Phase]
 	deriving (Eq, Data, Typeable, Show)
 data Phase = Phase PhaseName PhaseInt
     deriving (Eq, Data, Typeable, Show)
