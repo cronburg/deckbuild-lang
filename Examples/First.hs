@@ -6,7 +6,7 @@ module Examples.First where
 
 import System.IO.Unsafe (unsafePerformIO)
 import Test.HUnit hiding (test)
--- import Text.ParserCombinators.Parsec
+import Text.ParserCombinators.Parsec
 
 -- Importing the following was the most convenient.
 -- Until we figure out the better way to do it, if at all.
