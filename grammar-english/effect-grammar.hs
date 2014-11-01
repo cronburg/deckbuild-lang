@@ -13,6 +13,16 @@ playCard     :: Game -> Card -> Game
 draw         :: Game -> Cards -> Game
 
 draws        :: Game -> Player -> Int -> Game
+gains        :: Game -> Player -> Card -> Game
+
+-- returns a list of the top card of each pile in the supply
+getSupply :: Cards
+
+may :: -- ask a player if they want to do something to a specific card
+
+-- ask a player to select 1 or 0 cards from a list of cards
+--   i.e. concurrently do multiple may's
+manymay ::
 
 -- Getters for the various piles of cards in a deck building game:
 getDeck      :: Game -> Player -> Cards

@@ -49,14 +49,29 @@ mayDiscardUpTo n hand = mayUpTo discard n hand
 mayTrashUpTo   n hand = mayUpTo trash   n hand
 mayDrawUpTo    n hand = mayUpTo draw    n hand
 
+costingUpTo :: Int -> (Int -> Bool)
+costingUpTo c = (>=) c
+
+-- Gain n cards in the supply satisfying a certain condition:
+gain :: Int -> Cards -> (Card -> Bool) -> ???
+gain n src cndn
+  | n == 0    = ()
+  | otherwise = do
+    { gained <- manymay (gains thisPlayer) (filter cndn src)
+    ; if gained
+        then gain (n - 1) src cndn
+        else gain n src cndn
+    }
+
 getPile p s  = (getNamedPile $ getPlayerName p) ++ s
 getDeck p    = getPile p "'s Deck"
 getDiscard p = getPile p "'s Discard Pile"
 getHand p    = getPile p "'s Hand"
 getTrash     = getNamedPile "Trash"
 
-thisHand = getHand $ owner thisCard
-thisDeck = getDeck $ owner thisCard
+thisHand   = getHand $ owner thisCard
+thisDeck   = getDeck $ owner thisCard
+thisPlayer = owner thisCard
 
 ------------------------------------------------------------------------------
 -- Example effect descriptions for various cards:
@@ -89,6 +104,20 @@ thisDeck = getDeck $ owner thisCard
 
 -- Chancellor:
 { action { do { mayExactly discard (length thisDeck) thisDeck } } }
+
+-- Village:
+{ action {} } -- no extra effects
+-- Woodcutter:
+{ action {} } -- no extra effects
+
+-- Workshop
+{ action { do { gain 1 (from supply) (costingUpTo 4) } } }
+
+-- Bureaucrat
+{ action { do
+  { gains $ fst $ filter (\(Card id _) -> id == "Silver") getSupply
+  ; 
+
 
 
 
