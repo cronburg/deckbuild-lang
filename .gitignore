@@ -29,3 +29,8 @@
 
 # ignore PDF files
 *.pdf
+
+# Generated cabal stuff
+.cabal-sandbox
+dist/
+cabal.sandbox.config
