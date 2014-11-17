@@ -1,4 +1,7 @@
-module Language.DeckBuild.Parser where
+module Language.DeckBuild.Parser
+  ( cardFile, turnDecl, ruleFile )
+  where
+
 import Text.ParserCombinators.Parsec
 import qualified Text.Parsec.String as PS
 import qualified Text.Parsec.Prim   as PP
@@ -7,7 +10,7 @@ import qualified Text.Parsec.Expr as PE
 import Text.ParserCombinators.Parsec.Language (haskellStyle, reservedOpNames, reservedNames)
 import Data.Char        -- Provides isDigit and isSpace functions
 
-import Language.DeckBuild.Syntax
+import Language.DeckBuild.Syntax hiding (turnID)
 
 type Parser = PS.Parser
 
@@ -30,19 +33,21 @@ cardDecl = do
   ; descr <- braces cardDescr
   ; reserved "costs"
   ; cost <- integer
-  ; return $ Card cID cTY descr cost }
+  ; return $ Card cID cTY descr cost
+  }
 
 -- Attempts to parse the given reserved string card type keyword,
 -- returning the corresponding CardType
-cType s = do
-  reserved s;
-  return (case s of
-    "Treasure" -> TREASURE
-    "Action"   -> ACTION
-    "Victory"  -> VICTORY)
+cardType' s = do
+  { reserved s
+  ; return $ case s of
+      "Treasure" -> TREASURE
+      "Action"   -> ACTION
+      "Victory"  -> VICTORY
+  }
 
 -- Tries to parse different card types one-by-one
-cardType = cType "Treasure" <||> cType "Action" <||> cType "Victory"
+cardType = cardType' "Treasure" <||> cardType' "Action" <||> cardType' "Victory"
 
 -- The name (ID) of a card is just a regular identifier
 cardID = identifier
@@ -51,16 +56,18 @@ cardID = identifier
 cardDescr = do
   { d1 <- many effectDescr
   ; d2 <- englishDescr
-  ; return $ CardDescr { primary = d1, other = d2 } }
+  ; return $ CardDescr { primary = d1, other = d2 }
+  }
 
 -- Attempts to parse the given reserved string effect keyword,
 -- returning the corresponding EffectType
 eType s = do
   { reserved s
-  ; return (case s of
+  ; return $ case s of
               "actions" -> ACTIONS
               "coins"   -> MONEY
-              "buys"    -> BUYS) }
+              "buys"    -> BUYS
+  }
 
 
 -- Lower-half description of a card (non-bold-text), is just a literal
@@ -72,7 +79,8 @@ effectDescr = do
   { PP.lookAhead (char '+' <||> char '-')
   ; amount <- expr
   ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
-  ; return $ Effect { amount = amount, effectType = effect } }
+  ; return $ Effect { amount = amount, effectType = effect }
+  }
 ---------------
 -- Custom Rules Parsing
 
@@ -82,52 +90,51 @@ ruleFile = many turnDecl
 -- returns a Turn'
 
 turnDecl = do
-{ reserved "turn"
+  { reserved "turn"
   ; tID <- turnID
   ; phases <- braces (many phaseDescr)
   ; return $ Turn tID phases
-}
+  }
 
 turnID = identifier
 
 phaseDescr = do
-{ phase <- phaseNameDescr
+  { phase <- phaseNameDescr
   ; amount <- phaseAmountType "all" <||> phaseAmountIntegerType
   ; return $ Phase phase amount
-}
+  }
 
 phaseNameDescr = do
-{ phase <- (phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw")
+  { phase <- (phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw")
   ; return phase
-
-}
+  }
 phaseAmountType s = do
-{ reserved s
-  ; return (case s of
-          "all" -> All)}
+  { reserved s
+  ; return $ case s of "all" -> All
+  }
 phaseAmountIntegerType = do
-{ i <- integer
+  { i <- integer
   ; return $ PhaseInt i
-  
-}
+  }
 
 
 phaseType s = do
   { reserved s
-    ; return (case s of
+  ; return $ case s of
               "action"  -> ActionP
               "buy"     -> BuyP
               "discard" -> DiscardP
-              "draw"    -> DrawP) }
+              "draw"    -> DrawP
+  }
 
 ------------------------------------------------------------------------------
 -- Lexer
 lexer :: PT.TokenParser ()
-lexer = PT.makeTokenParser (haskellStyle 
-  { reservedOpNames = ["::", "{", "}", "+", "-"],
-    reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
+lexer = PT.makeTokenParser $ haskellStyle 
+  { reservedOpNames = ["::", "{", "}", "+", "-"]
+  , reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
                        "Victory","turn","all","buy","discard","draw"]
-  })
+  }
 
 whiteSpace    = PT.whiteSpace  lexer
 identifier    = PT.identifier  lexer
@@ -148,5 +155,5 @@ expr = PE.buildExpressionParser table term
 term = natural
        <?> "simple expression"
 table = [ [prefix "-" negate, prefix "+" id ] ]
-prefix   name fun = PE.Prefix ( do { reservedOp name
-                                   ; return fun } )
+prefix   name fun = PE.Prefix $ reservedOp name >> return fun
+
