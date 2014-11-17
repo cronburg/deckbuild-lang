@@ -14,8 +14,12 @@ data EffectType = MONEY    | ACTIONS | BUYS
 
 type CardID     = String
 
-data Card = Card CardID CardType CardDescr CardCost
-    deriving (Eq, Data, Typeable, Show)
+data Card = Card
+  { cID    :: CardID
+  , cType  :: CardType
+  , cDescr :: CardDescr
+  , cCost  :: CardCost
+  } deriving (Eq, Data, Typeable, Show)
 
 data CardDescr = CardDescr
   { primary :: [ Effect ]
@@ -31,16 +35,20 @@ type CardCost = Integer
 
 type TurnID = String
 
-data Turn = Turn TurnID [Phase]
-  deriving (Eq, Data, Typeable, Show)
+data Turn = Turn
+  { turnID     :: TurnID
+  , turnPhases :: [Phase]
+  } deriving (Eq, Data, Typeable, Show)
 
-data Phase = Phase PhaseName PhaseInt
-    deriving (Eq, Data, Typeable, Show)
+data Phase = Phase
+  { phaseName :: PhaseName
+  , phaseInt  :: PhaseInt
+  } deriving (Eq, Data, Typeable, Show)
 
 data PhaseInt = PhaseInt Integer | All
 	deriving (Eq, Data, Typeable, Show)
 
-data PhaseName = ActionP  | BuyP  | DiscardP | DrawP 
+data PhaseName = ActionP  | BuyP  | DiscardP | DrawP
  	deriving (Eq, Data, Typeable, Show)
 
 -- Do we need this? -- RLV

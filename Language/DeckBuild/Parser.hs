@@ -1,4 +1,7 @@
-module Language.DeckBuild.Parser where
+module Language.DeckBuild.Parser
+  ( cardFile, turnDecl, ruleFile )
+  where
+
 import Text.ParserCombinators.Parsec
 import qualified Text.Parsec.String as PS
 import qualified Text.Parsec.Prim   as PP
@@ -7,7 +10,7 @@ import qualified Text.Parsec.Expr as PE
 import Text.ParserCombinators.Parsec.Language (haskellStyle, reservedOpNames, reservedNames)
 import Data.Char        -- Provides isDigit and isSpace functions
 
-import Language.DeckBuild.Syntax
+import Language.DeckBuild.Syntax hiding (turnID)
 
 type Parser = PS.Parser
 
@@ -35,7 +38,7 @@ cardDecl = do
 
 -- Attempts to parse the given reserved string card type keyword,
 -- returning the corresponding CardType
-cType s = do
+cardType' s = do
   { reserved s
   ; return $ case s of
       "Treasure" -> TREASURE
@@ -44,7 +47,7 @@ cType s = do
   }
 
 -- Tries to parse different card types one-by-one
-cardType = cType "Treasure" <||> cType "Action" <||> cType "Victory"
+cardType = cardType' "Treasure" <||> cardType' "Action" <||> cardType' "Victory"
 
 -- The name (ID) of a card is just a regular identifier
 cardID = identifier
