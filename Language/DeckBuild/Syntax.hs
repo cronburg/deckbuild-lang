@@ -6,6 +6,10 @@ import Data.Generics (Data, Typeable)
 ------------------------------------------------------------------------------
 -- Data types and type aliases for a simple deck-building game (Dominion-like)
 
+data DeckDecl = DeckDeclCard  Card
+              | DeckDeclTurn  Turn
+   deriving (Eq, Data, Typeable, Show)
+
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
 

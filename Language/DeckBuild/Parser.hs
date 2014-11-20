@@ -1,5 +1,5 @@
 module Language.DeckBuild.Parser
-  ( cardFile, turnDecl, ruleFile )
+  ( cardFile, turnDecl, ruleFile, cardDecl, deckDecls )
   where
 
 import Text.ParserCombinators.Parsec
@@ -8,11 +8,21 @@ import qualified Text.Parsec.Prim   as PP
 import qualified Text.Parsec.Token  as PT
 import qualified Text.Parsec.Expr as PE
 import Text.ParserCombinators.Parsec.Language (haskellStyle, reservedOpNames, reservedNames)
+import Text.ParserCombinators.Parsec.Pos      (newPos)
 import Data.Char        -- Provides isDigit and isSpace functions
 
 import Language.DeckBuild.Syntax hiding (turnID)
 
 type Parser = PS.Parser
+
+------------------------------------------------------------------------------
+-- Top-level parser:
+
+deckDecls = many deckDecl
+deckDecl  = deckDeclCard <||> deckDeclTurn
+
+deckDeclCard = cardDecl >>= \c -> return $ DeckDeclCard c
+deckDeclTurn = turnDecl >>= \t -> return $ DeckDeclTurn t
 
 ------------------------------------------------------------------------------
 -- Or-Try Combinator (tries two parsers, one after the other)
