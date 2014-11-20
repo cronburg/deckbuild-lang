@@ -27,6 +27,7 @@ tests = TestList
   , TestLabel "Turn03"  turn03_test
   , TestLabel "Turn04"  turn04_test
   , TestLabel "Turn05"  turn05_test
+  , TestLabel "Deck01"  deck01_test
   ]
 
 -------------------------------------------------------------------------------
@@ -46,6 +47,12 @@ mkTestIO s e r = TestCase $ assertEqual s e (unsafePerformIO r)
 
 -------------------------------------------------------------------------------
 -- Tests
+
+deck01_input   = "card Village  :: Action { +1 actions -3     buys \"awesome village\" } costs 3 "
+              ++ "card Village2 :: Action { + 1 actions -   3 buys \"awesome village\" } costs 3 "
+deck01_result  = getResult $ parse deckDecls "" deck01_input
+deck01_test    = mkTest "deck01" deck01_expects deck01_result
+deck01_expects = map DeckDeclCard $ card01_expects ++ card02_expects
 
 -- Basic card syntax.
 card01_input   = "card Village :: Action { +1 actions -3 buys \"awesome village\" } costs 3"
@@ -194,5 +201,4 @@ turn05_expects =
     , Phase DiscardP (PhaseInt 3)
     , Phase DrawP    (PhaseInt 4) ]
   ]
-
 
