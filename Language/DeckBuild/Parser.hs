@@ -1,5 +1,5 @@
 module Language.DeckBuild.Parser
-  ( cardFile, turnDecl, ruleFile, cardDecl, deckDecls )
+  ( cardFile, turnDecl, ruleFile, cardDecl, deckDecls, parseDeckDecls )
   where
 
 import Text.ParserCombinators.Parsec
@@ -14,6 +14,20 @@ import Data.Char        -- Provides isDigit and isSpace functions
 import Language.DeckBuild.Syntax hiding (turnID, phaseName)
 
 type Parser = PS.Parser
+
+parseDeckDecls :: SourceName -> Line -> Column -> String -> Either ParseError [DeckDecl]
+parseDeckDecls fileName line column input 
+  = PP.parse (do { setPosition (newPos fileName line column)
+                 ; whiteSpace
+                 ; x <- deckDecls
+                 ; whiteSpace
+                 ; eof <|> errorParse
+                 ; return x
+                 }) fileName input
+
+errorParse = do 
+  { rest <- manyTill anyToken eof
+  ; unexpected rest }
 
 ------------------------------------------------------------------------------
 -- Top-level parser:
