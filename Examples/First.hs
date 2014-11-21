@@ -103,7 +103,7 @@ card03_expects =
     }
   ]
 
--- Buy only. No action
+-- The effect of this card gives additional buys (no additional actions as in test cases above)
 card04_input   = "card Village4 :: Action { +100 buys  \"awesome village\" } costs 3"
 card04_result  = getResult $ parse cardFile "" card04_input
 card04_test    = mkTest "card04" card04_expects card04_result
@@ -118,7 +118,7 @@ card04_expects =
     }
   ]
 
--- Action only. No buys.
+-- Card effect gives additional actions (no additional buys)
 card05_input   = "card Village5 :: Action { +200 actions  \"awesome village\" } costs 3"
 card05_result  = getResult $ parse cardFile "" card05_input
 card05_test    = mkTest "card05" card05_expects card05_result
@@ -133,7 +133,7 @@ card05_expects =
     }
   ]
 
---standard Dominion turn ruleset
+-- standard Dominion turn ruleset
 turn01_input   = "turn Dominion_Standard { action 1 buy 1 discard all draw 5 }"
 turn01_result  = getTurn $ parse turnDecl "" turn01_input
 turn01_test    = mkTest "turn01" turn01_expects turn01_result
@@ -173,6 +173,7 @@ turn04_expects = Turn "Garbage_Collector"
     , Phase DrawP (PhaseInt 4) ]
 
 -- Maybe this should go in its own file?
+  -- could also do e.g. `turn04_input ++ turn03_input ++ ...`
 turn05_input   = "turn Dominion_Standard { action 1 buy 1 discard all draw 5 } "
               ++ "turn Easy_Mode { action 2 buy 2 discard all draw 7 } turn HardCore "
               ++ "{ action 1 buy 1 discard all draw 1 } turn Garbage_Collector { "
