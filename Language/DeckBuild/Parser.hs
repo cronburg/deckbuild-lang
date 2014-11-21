@@ -75,7 +75,7 @@ eType s = do
   { reserved s
   ; return $ case s of
               "actions" -> ACTIONS
-              "coins"   -> MONEY
+              "coins"   -> COINS
               "buys"    -> BUYS
   }
 

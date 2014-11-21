@@ -13,7 +13,7 @@ data DeckDecl = DeckDeclCard  Card
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
 
-data EffectType = MONEY    | ACTIONS | BUYS
+data EffectType = COINS    | ACTIONS | BUYS
     deriving (Eq, Data, Typeable, Show)
 
 type CardID     = String
