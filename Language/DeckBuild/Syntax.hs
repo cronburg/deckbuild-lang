@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module Language.DeckBuild.Syntax where
 import Language.Haskell.TH (Pat, Exp, Strict)
-import Language.Haskell.TH.Syntax (Lift)
+import Language.Haskell.TH.Syntax (lift, mkName, Exp( ConE ), Lift, Exp( ListE ), Exp( LitE ), Exp( RecConE ))
 import Data.Generics (Data, Typeable)
 
 ------------------------------------------------------------------------------
@@ -12,22 +12,54 @@ data DeckDecl = DeckDeclCard  Card
    deriving (Eq, Data, Typeable, Show)
 
 -- Lift option:
-instance Lift DeckDecl where
 liftD (DeckDeclCard card) = return $ liftCard card
 liftD (DeckDeclTurn turn) = undefined -- return $ liftD turn
 
-liftCard (Card { cID    = cardID
+liftCard (Card { cID    = cardid
                , cType  = cardType
                , cDescr = cardDescr
                , cCost  = cardCost }
-               ) = return $ RecConE (mkName "Card") [ (mkName "cID", lift cardID)
-                                                    , (mkName "cType", liftCtype cardType)
-                                                    , (mkName "cDescr", lift cardDescr
-                                                    , (mkName "cCost", lift cardCost) ]
+               ) = do
+    lcid <- lift cardid
+    lctype <- liftCtype cardType
+    lcdescr <- liftCdescr cardDescr
+    lccost <- lift cardCost
+    return $ RecConE (mkName "Card") [ (mkName "cID", lcid)
+                                     , (mkName "cType", lctype)
+                                     , (mkName "cDescr", lcdescr)
+                                     , (mkName "cCost", lccost) ]
 
-liftCtype TREASURE = ConE (mkName "TREASURE")
-liftCtype ACTION = ConE (mkName "ACTION")
-liftCtype VICTORY = ConE (mkName "VICTORY")
+liftCtype TREASURE = return $ ConE (mkName "TREASURE")
+liftCtype ACTION = return $ ConE (mkName "ACTION")
+liftCtype VICTORY = return $ ConE (mkName "VICTORY")
+
+liftCdescr (CardDescr { primary = effects
+                      , other = otherEffect }
+                      ) = do
+    es <- mapM liftEffect effects
+    o <- lift otherEffect
+    return $ RecConE (mkName "CardDescr") [ (mkName "primary", ListE es)
+                                          , (mkName "other", o) ]
+
+liftEffect (Effect { amount = amt
+                   , effectType = etype }
+                   ) = do
+    a <- lift amt
+    e <- liftEtype etype
+    return $ RecConE (mkName "Effect") [ (mkName "amount", a)
+                                       , (mkName "effectType", e) ]
+
+liftEtype COINS = return conCoins
+liftEtype BUYS = return conBuys
+liftEtype ACTIONS = return conActions
+liftEtype CARDS = return conCards
+liftEtype VICTORYPOINTS = return conVictoryPoints
+
+conCoins = ConE (mkName "COINS")
+conActions = ConE (mkName "ACTIONS")
+conBuys = ConE (mkName "BUYS")
+conCards = ConE (mkName "CARDS")
+conVictoryPoints = ConE (mkName "VICTORYPOINTS")
 
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
