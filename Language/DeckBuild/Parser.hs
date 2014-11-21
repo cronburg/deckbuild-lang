@@ -50,21 +50,13 @@ cardFile = many cardDecl
 
 -- A card declaration:
 cardDecl = do
-  { whiteSpace
-  ; reserved "card"
-  ; whiteSpace
+  { reserved "card"
   ; cID <- cardID
-  ; whiteSpace
   ; reserved "::"
-  ; whiteSpace
   ; cTY <- cardType
-  ; whiteSpace
   ; descr <- braces cardDescr
-  ; whiteSpace
   ; reserved "costs"
-  ; whiteSpace
   ; cost <- integer
-  ; whiteSpace
   ; return $ Card cID cTY descr cost
   }
 
@@ -86,9 +78,8 @@ cardID = identifier
 
 -- Parse the description on a card
 cardDescr = do
-  { whiteSpace
+  {
   ; d1 <- many effectDescr
-  ; whiteSpace
   ; d2 <- englishDescr
   ; return $ CardDescr { primary = d1, other = d2 }
   }
@@ -106,12 +97,7 @@ eType s = do
 
 -- Lower-half description of a card (non-bold-text), is just a literal
 -- string for now (presumably in English)
-englishDescr = do
-  {s1 <- stringLiteral
-  ; whiteSpace
-  ;s2 <- englishDescr
-  ; return  (s1 ++ s2) <||> return s1
-  }
+englishDescr = stringLiteral
 
 -- Parses effect (upper-half) description of a card (bold-face-text)
 effectDescr = do
