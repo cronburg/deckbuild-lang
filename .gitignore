@@ -34,3 +34,9 @@
 .cabal-sandbox
 dist/
 cabal.sandbox.config
+
+# Haskell
+*.o
+*.dyn_hi
+*.dyn_o
+*.hi
