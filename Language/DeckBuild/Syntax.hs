@@ -1,6 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module Language.DeckBuild.Syntax where
 import Language.Haskell.TH (Pat, Exp, Strict)
+import Language.Haskell.TH.Syntax (Lift)
 import Data.Generics (Data, Typeable)
 
 ------------------------------------------------------------------------------
@@ -9,6 +10,14 @@ import Data.Generics (Data, Typeable)
 data DeckDecl = DeckDeclCard  Card
               | DeckDeclTurn  Turn
    deriving (Eq, Data, Typeable, Show)
+
+-- Lift option:
+-- instance Lift DeckDecl where
+-- lift (DeckDeclCard card) = return $ lift card
+-- lift (DeckDeclTurn turn) = return $ lift turn
+-- 
+-- instance Lift Card where
+-- lift card {= return $ lift card
 
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
