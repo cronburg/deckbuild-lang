@@ -13,12 +13,24 @@
 \thispagestyle{empty}
 
 \begin{grammar}
+
+% -----------------------------------------------------------------------------
+% - Top-level decls:
+
+<deckDecls>  ::= <deckDecl>*
+
+<deckDecl>   ::= <cardDecl> | <turnDecl>
+
 % -----------------------------------------------------------------------------
 % - Card declaration grammar rules:
 
-<cardDecl>    ::= "card" <cardID> "::" <cardType> "{" <effect>* "}" "costs" <intLit>
+<cardDecl>    ::= "card" <cardID> "::" <cardType> "{" <cardDescr> "}" "costs" <intLit>
 
-<effect>      ::= <plusOrMinus><intLit> <keyword>
+<cardDescr>   ::= <effectDescr>* <englishDescr>
+
+<englishDescr> ::= <stringLit>
+
+<effectDescr>  ::= <plusOrMinus><intLit> <effectType>
 
 <plusOrMinus> ::= "+" | "-"
 
@@ -26,14 +38,17 @@
 % - Phase / rulebook declaration grammar rules:
 % -   TODO: custom named phases (future), rulebook for custom rules other than turns
 
-<turnDecl> ::= "turn" <turnID> "{" <phase>* "}"
+<turnDecl>   ::= "turn" <turnID> "{" <phaseDescr>* "}"
 
-<phase>     ::= <phaseName> <phaseInt>
+<phaseDescr> ::= <phaseName> <phaseInt>
 
-<phaseInt>  ::= <intLit> | "all"
+<phaseInt>   ::= <intLit> | "all"
 
 % looks like: phases {Action 1 Buy 1 Discard all Draw 5} for standard rules.
-<keyword>     ::= "action"   | "coins"  | "buys"    | "Victory"
+
+% -----------------------------------------------------------------------------
+% - Keyword and built-in-to-parsec grammar rules:
+<effectType>  ::= "actions"   | "coins"  | "buys"
 
 <cardType>    ::= "Treasure" | "Action" | "Victory"
 
@@ -41,7 +56,7 @@
 
 <*ID>         ::= <identifier>
 
-<intLit>      ::= As defined in Text.Parsec.Token
+<*Lit>      ::= As defined in Text.Parsec.Token
 
 <identifier>  ::= As defined in Text.Parsec.Token
 
