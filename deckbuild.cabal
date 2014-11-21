@@ -22,6 +22,7 @@ data-files:          Examples/*.example.txt, grammar/Makefile, grammar/*.tex
 library
   exposed-modules:     Examples.First, Language.DeckBuild.Parser, Language.DeckBuild.Syntax
                      , Language.DeckBuild.CodeGen, Language.DeckBuild.Quote
+                     , Examples.BaseQuote
   -- other-modules:       
   other-extensions:    TypeSynonymInstances, TemplateHaskell, QuasiQuotes,
                        MultiParamTypeClasses, FlexibleInstances, UndecidableInstances, 
