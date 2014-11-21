@@ -15,14 +15,14 @@ data DeckDecl = DeckDeclCard  Card
 -- instance Lift DeckDecl where
 -- lift (DeckDeclCard card) = return $ lift card
 -- lift (DeckDeclTurn turn) = return $ lift turn
--- 
+--
 -- instance Lift Card where
 -- lift card {= return $ lift card
 
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
 
-data EffectType = COINS    | ACTIONS | BUYS
+data EffectType = COINS    | ACTIONS | BUYS | CARDS | VICTORYPOINTS
     deriving (Eq, Data, Typeable, Show)
 
 type CardID     = String

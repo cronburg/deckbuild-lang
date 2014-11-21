@@ -92,6 +92,8 @@ eType s = do
               "actions" -> ACTIONS
               "coins"   -> COINS
               "buys"    -> BUYS
+              "cards"   -> CARDS
+              "victory" -> VICTORYPOINTS
   }
 
 
@@ -103,7 +105,7 @@ englishDescr = many stringLiteral
 effectDescr = do
   { PP.lookAhead (char '+' <||> char '-')
   ; amount <- expr
-  ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys")
+  ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys" <||> eType "cards" <||> eType "victory")
   ; return $ Effect { amount = amount, effectType = effect }
   }
 ---------------
