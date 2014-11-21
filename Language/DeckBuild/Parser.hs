@@ -11,7 +11,7 @@ import Text.ParserCombinators.Parsec.Language (haskellStyle, reservedOpNames, re
 import Text.ParserCombinators.Parsec.Pos      (newPos)
 import Data.Char        -- Provides isDigit and isSpace functions
 
-import Language.DeckBuild.Syntax hiding (turnID)
+import Language.DeckBuild.Syntax hiding (turnID, phaseName)
 
 type Parser = PS.Parser
 
@@ -109,24 +109,15 @@ turnDecl = do
 turnID = identifier
 
 phaseDescr = do
-  { phase <- phaseNameDescr
-  ; amount <- phaseAmountType "all" <||> phaseAmountIntegerType
+  { phase <- phaseName
+  ; amount <- phaseAmount
   ; return $ Phase phase amount
   }
 
-phaseNameDescr = do
-  { phase <- (phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw")
-  ; return phase
-  }
-phaseAmountType s = do
-  { reserved s
-  ; return $ case s of "all" -> All
-  }
-phaseAmountIntegerType = do
-  { i <- integer
-  ; return $ PhaseInt i
-  }
+phaseAmount = (reserved "all" >>        return All)
+         <||> (integer        >>= \i -> return $ PhaseInt i)
 
+phaseName = phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw"
 
 phaseType s = do
   { reserved s
