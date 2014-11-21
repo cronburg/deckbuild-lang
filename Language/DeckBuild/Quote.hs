@@ -29,7 +29,7 @@ dparse input = do
   let fileName = TH.loc_filename loc
   let (line,column) = TH.loc_start loc
 
-  case PP.parse P.deckDecls fileName input of
+  case P.parseDeckDecls fileName line column input of
     Left err -> unsafePerformIO $ fail $ show err
     Right x  -> make_deck_declaration x
 
