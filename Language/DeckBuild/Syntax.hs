@@ -12,12 +12,22 @@ data DeckDecl = DeckDeclCard  Card
    deriving (Eq, Data, Typeable, Show)
 
 -- Lift option:
--- instance Lift DeckDecl where
--- lift (DeckDeclCard card) = return $ lift card
--- lift (DeckDeclTurn turn) = return $ lift turn
--- 
--- instance Lift Card where
--- lift card {= return $ lift card
+instance Lift DeckDecl where
+liftD (DeckDeclCard card) = return $ liftCard card
+liftD (DeckDeclTurn turn) = undefined -- return $ liftD turn
+
+liftCard (Card { cID    = cardID
+               , cType  = cardType
+               , cDescr = cardDescr
+               , cCost  = cardCost }
+               ) = return $ RecConE (mkName "Card") [ (mkName "cID", lift cardID)
+                                                    , (mkName "cType", liftCtype cardType)
+                                                    , (mkName "cDescr", lift cardDescr
+                                                    , (mkName "cCost", lift cardCost) ]
+
+liftCtype TREASURE = ConE (mkName "TREASURE")
+liftCtype ACTION = ConE (mkName "ACTION")
+liftCtype VICTORY = ConE (mkName "VICTORY")
 
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
