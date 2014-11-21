@@ -16,7 +16,7 @@ import Language.DeckBuild.Syntax hiding (turnID, phaseName)
 type Parser = PS.Parser
 
 parseDeckDecls :: SourceName -> Line -> Column -> String -> Either ParseError [DeckDecl]
-parseDeckDecls fileName line column input 
+parseDeckDecls fileName line column input
   = PP.parse (do { setPosition (newPos fileName line column)
                  ; whiteSpace
                  ; x <- deckDecls
@@ -25,7 +25,7 @@ parseDeckDecls fileName line column input
                  ; return x
                  }) fileName input
 
-errorParse = do 
+errorParse = do
   { rest <- manyTill anyToken eof
   ; unexpected rest }
 
@@ -50,13 +50,21 @@ cardFile = many cardDecl
 
 -- A card declaration:
 cardDecl = do
-  { reserved "card"
+  { whiteSpace
+  ; reserved "card"
+  ; whiteSpace
   ; cID <- cardID
+  ; whiteSpace
   ; reserved "::"
+  ; whiteSpace
   ; cTY <- cardType
+  ; whiteSpace
   ; descr <- braces cardDescr
+  ; whiteSpace
   ; reserved "costs"
+  ; whiteSpace
   ; cost <- integer
+  ; whiteSpace
   ; return $ Card cID cTY descr cost
   }
 
@@ -78,7 +86,9 @@ cardID = identifier
 
 -- Parse the description on a card
 cardDescr = do
-  { d1 <- many effectDescr
+  { whiteSpace
+  ; d1 <- many effectDescr
+  ; whiteSpace
   ; d2 <- englishDescr
   ; return $ CardDescr { primary = d1, other = d2 }
   }
@@ -96,7 +106,12 @@ eType s = do
 
 -- Lower-half description of a card (non-bold-text), is just a literal
 -- string for now (presumably in English)
-englishDescr = stringLiteral
+englishDescr = do
+  {s1 <- stringLiteral
+  ; whiteSpace
+  ;s2 <- englishDescr
+  ; return  (s1 ++ s2) <||> return s1
+  }
 
 -- Parses effect (upper-half) description of a card (bold-face-text)
 effectDescr = do
@@ -145,7 +160,7 @@ phaseType s = do
 ------------------------------------------------------------------------------
 -- Lexer
 lexer :: PT.TokenParser ()
-lexer = PT.makeTokenParser $ haskellStyle 
+lexer = PT.makeTokenParser $ haskellStyle
   { reservedOpNames = ["::", "{", "}", "+", "-"]
   , reservedNames   = ["Treasure", "costs", "card", "action", "coins", "buys",
                        "Victory","turn","all","buy","discard","draw"]
@@ -171,4 +186,3 @@ term = natural
        <?> "simple expression"
 table = [ [prefix "-" negate, prefix "+" id ] ]
 prefix   name fun = PE.Prefix $ reservedOp name >> return fun
-
