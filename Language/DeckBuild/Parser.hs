@@ -81,7 +81,7 @@ cardDescr = do
   {
   ; d1 <- many effectDescr
   ; d2 <- englishDescr
-  ; return $ CardDescr { primary = d1, other = d2 }
+  ; return $ CardDescr { primary = d1, other = concat d2 }
   }
 
 -- Attempts to parse the given reserved string effect keyword,
@@ -97,7 +97,7 @@ eType s = do
 
 -- Lower-half description of a card (non-bold-text), is just a literal
 -- string for now (presumably in English)
-englishDescr = stringLiteral
+englishDescr = many stringLiteral
 
 -- Parses effect (upper-half) description of a card (bold-face-text)
 effectDescr = do

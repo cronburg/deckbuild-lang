@@ -13,17 +13,13 @@ import Language.DeckBuild.Quote
         card Cellar  :: Action {
           +1 actions +1 buys 
           "Discard any number of cards. +1 Card per card discarded"
+          "Discard any number of cards. +1 Card per card discarded"
+          "Discard any number of cards. +1 Card per card discarded"
+          "Discard any number of cards. +1 Card per card discarded"
         } costs 2
-        
-        card Chapel  :: Action {
-          "Trash up to 4 cards from your hand."
-        }
 
-        card Moat    :: Action {
-          +2 cards
-          "When another player plays an Attack card, you may "
-          "reveal this from your hand. If you do, you are unaffected "
-          "by that Attack. "
-        }
-     |]
-
+        card Cellar2  :: Action {
+          +1 actions +1 buys 
+          "Discard any number of cards. +1 Card per card discarded"
+        } costs 2
+        |]
