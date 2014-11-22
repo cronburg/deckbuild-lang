@@ -3,6 +3,7 @@ module Language.DeckBuild.Syntax where
 import Language.Haskell.TH (Pat, Exp, Strict)
 import Language.Haskell.TH.Syntax (lift, mkName, Exp( ConE ), Lift, Exp( ListE ), Exp( LitE ), Exp( RecConE ), Exp( AppE ))
 import Data.Generics (Data, Typeable)
+import Data.Char (toUpper)
 
 ------------------------------------------------------------------------------
 -- Data types and type aliases for a simple deck-building game (Dominion-like)
@@ -21,7 +22,8 @@ liftCard (Card { cID    = cardid
                , cDescr = cardDescr
                , cCost  = cardCost }
                ) = do
-    lcid <- lift cardid
+    --lcid <- lift cardid
+    let lcid = ConE $ mkName $ map toUpper cardid
     lctype <- liftCtype cardType
     lcdescr <- liftCdescr cardDescr
     lccost <- lift cardCost

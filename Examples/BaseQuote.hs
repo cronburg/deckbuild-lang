@@ -6,6 +6,9 @@ module Examples.BaseQuote where
 
 -- Importing the following was the most convenient.
 -- Until we figure out the better way to do it, if at all.
+  -- We'll definitely want to make some cleaner interfaces at some point
+  -- to our runtime types and quasiquoter - at the moment you have to
+  -- manually hide certain things from the Syntax: -KLC-
 import Language.DeckBuild.Syntax hiding (cID, cType, cDescr, cCost)
 import Language.DeckBuild.Quote
 
