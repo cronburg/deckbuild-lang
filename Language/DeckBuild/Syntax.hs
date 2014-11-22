@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module Language.DeckBuild.Syntax where
 import Language.Haskell.TH (Pat, Exp, Strict)
-import Language.Haskell.TH.Syntax (lift, mkName, Exp( ConE ), Lift, Exp( ListE ), Exp( LitE ), Exp( RecConE ))
+import Language.Haskell.TH.Syntax (lift, mkName, Exp( ConE ), Lift, Exp( ListE ), Exp( LitE ), Exp( RecConE ), Exp( AppE ))
 import Data.Generics (Data, Typeable)
 
 ------------------------------------------------------------------------------
@@ -13,8 +13,9 @@ data DeckDecl = DeckDeclCard  Card
 
 -- Lift option:
 liftD (DeckDeclCard card) = liftCard card
-liftD (DeckDeclTurn turn) = undefined -- return $ liftD turn
+liftD (DeckDeclTurn turn) = liftTurn turn
 
+-- Card lift functions
 liftCard (Card { cID    = cardid
                , cType  = cardType
                , cDescr = cardDescr
@@ -61,6 +62,34 @@ conBuys = ConE (mkName "BUYS")
 conCards = ConE (mkName "CARDS")
 conVictoryPoints = ConE (mkName "VICTORYPOINTS")
 
+-- Card lift functions
+liftTurn (Turn { turnID    = turnid
+               , turnPhases = phases }
+               ) = do
+    ltid <- lift turnid
+    ps <- mapM liftPhase phases 
+    return $ RecConE (mkName "Turn") [ (mkName "turnID", ltid)
+                                     , (mkName "turnPhases", ListE ps) ]
+
+liftPhase (Phase { phaseName = pname
+                 , phaseInt = pint }
+                 ) = do
+    a <- liftPhaseName pname
+    p <- liftPhaseInt pint
+    return $ RecConE (mkName "Phase") [ (mkName "phaseName", a)
+                                      , (mkName "phaseInt", p) ]
+
+liftPhaseInt (PhaseInt phase) = do
+    p <- lift phase
+    return $ AppE (ConE $ mkName "PhaseInt") p 
+liftPhaseInt All = return $ ConE (mkName "All")
+
+liftPhaseName ActionP = return $ ConE (mkName "ActionP")
+liftPhaseName BuyP = return $ ConE (mkName "BuyP")
+liftPhaseName DiscardP = return $ ConE (mkName "DiscardP")
+liftPhaseName DrawP = return $ ConE (mkName "DrawP")
+
+-- Data declarations
 data CardType   = TREASURE | ACTION  | VICTORY
     deriving (Eq, Data, Typeable, Show)
 

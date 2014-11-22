@@ -176,4 +176,11 @@ import Language.DeckBuild.Quote
           -1 victory
         } costs 0
 
+        turn Dominion_Standard {
+            action 1
+            buy 1
+            discard all
+            draw 5
+        }
+
         |]
