@@ -72,7 +72,7 @@ import Data.Typeable (Typeable)
           "Each other player discards down to 3 cards in his hand."
         } costs 4
 
-        card Moneynder :: Action {
+        card Moneylender :: Action {
           "Trash a Copper from your hand. If you do, +3 coins."
         } costs 4
 
@@ -100,7 +100,7 @@ import Data.Typeable (Typeable)
           "They discard the other revealed cards."
         } costs 4
 
-        card Throne_Room :: Action {
+        card ThroneRoom :: Action {
           "Choose an Action card in your hand. Play it twice."
         } costs 4
 
