@@ -6,26 +6,24 @@ module Language.DeckBuild.CodeGen
 import Language.Haskell.TH
 import Language.Haskell.TH.Syntax
 import Language.DeckBuild.Syntax
+import Data.Char (toUpper)
 
 make_deck_declaration :: [DeckDecl] -> Q [Dec]
 make_deck_declaration ds = do
     es <- mapM genDeckExp ds :: Q [Exp]
     let body = NormalB $ ListE es
-    return [ FunD (mkName "kingdomCards") [Clause [] body []] ]
---
---
---   DataD option:
---   let constructors = genCons ds
---   return $
---     [ DataD [] (mkName "Card") [] constructors []
---     ]
+    let constructors = genCons ds
+    return
+      [ DataD [] (mkName "CardName") [] constructors []
+      , FunD (mkName "kingdomCards") [Clause [] body []]
+      ]
 
 genCons ds = [NormalC (mkCardName d) [] | d <- ds, isCard d]
 
 isCard (DeckDeclCard c) = True
 isCard _                = False
 
-mkCardName (DeckDeclCard (Card {cID = name})) = mkName name
+mkCardName (DeckDeclCard (Card {cID = name})) = mkName $ map toUpper name
 mkCardName _ = undefined
 
 -- genDeckExp :: DeckDecl -> Q [DeckDecl]
