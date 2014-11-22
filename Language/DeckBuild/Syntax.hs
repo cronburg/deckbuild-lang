@@ -82,11 +82,11 @@ data CardDescr = CardDescr
   } deriving (Eq, Data, Typeable, Show)
 
 data Effect = Effect
-  { amount     :: Integer
+  { amount     :: Int
   , effectType :: EffectType
   } deriving (Eq, Data, Typeable, Show)
 
-type CardCost = Integer
+type CardCost = Int
 
 type TurnID = String
 
@@ -100,7 +100,7 @@ data Phase = Phase
   , phaseInt  :: PhaseInt
   } deriving (Eq, Data, Typeable, Show)
 
-data PhaseInt = PhaseInt Integer | All
+data PhaseInt = PhaseInt Int | All
 	deriving (Eq, Data, Typeable, Show)
 
 data PhaseName = ActionP  | BuyP  | DiscardP | DrawP
