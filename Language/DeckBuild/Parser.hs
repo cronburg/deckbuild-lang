@@ -124,10 +124,12 @@ effectDescr = do
 -- Custom Rules Parsing
 
 -- placeholder
+ruleFile :: PS.Parser [Turn]
 ruleFile = many turnDecl
 
 -- returns a Turn'
 
+turnDecl :: PS.Parser Turn
 turnDecl = do
   { reserved "turn"
   ; tID <- turnID
@@ -138,17 +140,21 @@ turnDecl = do
 turnID :: PS.Parser String
 turnID = identifier
 
+phaseDescr :: PS.Parser Phase
 phaseDescr = do
   { phase <- phaseName
   ; amount <- phaseAmount
   ; return $ Phase phase amount
   }
 
+phaseAmount :: PS.Parser PhaseInt
 phaseAmount = (reserved "all" >>        return All)
          <||> (integer        >>= \i -> return $ PhaseInt $ fromIntegral i)
 
+phaseName :: PS.Parser PhaseName
 phaseName = phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw"
 
+phaseType :: String -> PS.Parser PhaseName
 phaseType s = do
   { reserved s
   ; return $ case s of
