@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell,ScopedTypeVariables #-}
+{-# LANGUAGE TemplateHaskell,ScopedTypeVariables,KindSignatures #-}
 module Language.DeckBuild.CodeGen
   (make_deck_declaration)
   where

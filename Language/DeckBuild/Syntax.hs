@@ -1,4 +1,4 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable,TemplateHaskell,ScopedTypeVariables,KindSignatures #-}
 module Language.DeckBuild.Syntax where
 import Language.Haskell.TH (Pat, Exp, Strict)
 import Language.Haskell.TH.Syntax (lift, mkName, Exp( ConE ), Lift, Exp( ListE ), Exp( LitE ), Exp( RecConE ), Exp( AppE ))

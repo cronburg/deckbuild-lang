@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable,TemplateHaskell,ScopedTypeVariables,KindSignatures #-}
 module Language.DeckBuild.Parser
   ( cardFile, turnDecl, ruleFile, cardDecl, deckDecls, parseDeckDecls )
   where
