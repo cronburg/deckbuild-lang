@@ -12,7 +12,7 @@ data DeckDecl = DeckDeclCard  Card
    deriving (Eq, Data, Typeable, Show)
 
 -- Lift option:
-liftD (DeckDeclCard card) = return $ liftCard card
+liftD (DeckDeclCard card) = liftCard card
 liftD (DeckDeclTurn turn) = undefined -- return $ liftD turn
 
 liftCard (Card { cID    = cardid
