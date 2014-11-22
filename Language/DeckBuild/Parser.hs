@@ -33,7 +33,10 @@ errorParse = do
 ------------------------------------------------------------------------------
 -- Top-level parser:
 
+deckDecls :: PS.Parser [DeckDecl]
 deckDecls = many deckDecl
+
+deckDecl :: PS.Parser DeckDecl
 deckDecl  = deckDeclCard <||> deckDeclTurn
 
 deckDeclCard = cardDecl >>= \c -> return $ DeckDeclCard c
@@ -50,6 +53,7 @@ deckDeclTurn = turnDecl >>= \t -> return $ DeckDeclTurn t
 cardFile = many cardDecl
 
 -- A card declaration:
+cardDecl :: PS.Parser Card
 cardDecl = do
   { reserved "card"
   ; cID <- cardID
@@ -63,6 +67,7 @@ cardDecl = do
 
 -- Attempts to parse the given reserved string card type keyword,
 -- returning the corresponding CardType
+cardType' :: [Char] -> PS.Parser CardType
 cardType' s = do
   { reserved s
   ; return $ case s of
@@ -72,12 +77,15 @@ cardType' s = do
   }
 
 -- Tries to parse different card types one-by-one
+cardType :: PS.Parser CardType
 cardType = cardType' "Treasure" <||> cardType' "Action" <||> cardType' "Victory"
 
 -- The name (ID) of a card is just a regular identifier
+cardID :: PS.Parser String
 cardID = identifier
 
 -- Parse the description on a card
+cardDescr :: PS.Parser CardDescr
 cardDescr = do
   {
   ; d1 <- many effectDescr
@@ -87,6 +95,7 @@ cardDescr = do
 
 -- Attempts to parse the given reserved string effect keyword,
 -- returning the corresponding EffectType
+eType :: [Char] -> PS.Parser EffectType  
 eType s = do
   { reserved s
   ; return $ case s of
@@ -100,9 +109,11 @@ eType s = do
 
 -- Lower-half description of a card (non-bold-text), is just a literal
 -- string for now (presumably in English)
+englishDescr :: PS.Parser [String]
 englishDescr = many stringLiteral
 
 -- Parses effect (upper-half) description of a card (bold-face-text)
+effectDescr :: PS.Parser Effect
 effectDescr = do
   { PP.lookAhead (char '+' <||> char '-')
   ; amount <- expr
@@ -124,6 +135,7 @@ turnDecl = do
   ; return $ Turn tID phases
   }
 
+turnID :: PS.Parser String
 turnID = identifier
 
 phaseDescr = do
