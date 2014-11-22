@@ -23,8 +23,10 @@ make_deck_declaration ds = do
       , FunD (mkName "turnRules")    [Clause [] turnRulesBody   []]
       ]
 
+genCons :: [DeckDecl] -> [Con]
 genCons ds = [NormalC (mkCardName d) [] | d <- ds, isCard d]
 
+genCardCons :: [Con]
 genCardCons =
   [ RecC (mkName "RuntimeCard")
     [ (mkName "cID",    IsStrict, ConT $ mkName "CardName")
@@ -34,12 +36,14 @@ genCardCons =
     ]
   ]
 
+isCard :: DeckDecl -> Bool
 isCard (DeckDeclCard c) = True
 isCard _                = False
 
+mkCardName :: DeckDecl -> Name
 mkCardName (DeckDeclCard (Card {cID = name})) = mkName $ map toUpper name
 mkCardName _ = undefined
 
--- genDeckExp :: DeckDecl -> Q [DeckDecl]
+genDeckExp :: DeckDecl -> Q Exp
 genDeckExp e = liftD e --runQ [| e |]
 
