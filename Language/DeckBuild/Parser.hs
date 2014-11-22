@@ -57,7 +57,7 @@ cardDecl = do
   ; descr <- braces cardDescr
   ; reserved "costs"
   ; cost <- integer
-  ; return $ Card cID cTY descr cost
+  ; return $ Card cID cTY descr $ fromIntegral cost
   }
 
 -- Attempts to parse the given reserved string card type keyword,
@@ -106,7 +106,7 @@ effectDescr = do
   { PP.lookAhead (char '+' <||> char '-')
   ; amount <- expr
   ; effect <- (eType "actions" <||> eType "coins" <||> eType "buys" <||> eType "cards" <||> eType "victory")
-  ; return $ Effect { amount = amount, effectType = effect }
+  ; return $ Effect { amount = fromIntegral amount, effectType = effect }
   }
 ---------------
 -- Custom Rules Parsing
@@ -132,7 +132,7 @@ phaseDescr = do
   }
 
 phaseAmount = (reserved "all" >>        return All)
-         <||> (integer        >>= \i -> return $ PhaseInt i)
+         <||> (integer        >>= \i -> return $ PhaseInt $ fromIntegral i)
 
 phaseName = phaseType "action" <||> phaseType "buy" <||> phaseType "discard" <||> phaseType "draw"
 
