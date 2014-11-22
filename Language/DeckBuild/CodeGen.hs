@@ -17,8 +17,8 @@ make_deck_declaration ds = do
     let name_constructors = genCons ds
     let card_constructors = genCardCons
     return
-      [ DataD [] (mkName "CardName") [] name_constructors []
-      , DataD [] (mkName "RuntimeCard") [] card_constructors []
+      [ DataD [] (mkName "CardName") [] name_constructors [mkName "Eq", mkName "Typeable", mkName "Show"]
+      , DataD [] (mkName "RuntimeCard") [] card_constructors [mkName "Eq", mkName "Typeable", mkName "Show"]
       , FunD (mkName "kingdomCards") [Clause [] kingdomCardBody []]
       , FunD (mkName "turnRules")    [Clause [] turnRulesBody   []]
       ]

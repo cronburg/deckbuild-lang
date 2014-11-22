@@ -11,6 +11,7 @@ module Examples.BaseQuote where
   -- manually hide certain things from the Syntax: -KLC-
 import Language.DeckBuild.Syntax hiding (cID, cType, cDescr, cCost)
 import Language.DeckBuild.Quote
+import Data.Typeable (Typeable)
 
 -- Example of all common cards:
 -- http://dominionstrategy.com/card-lists/dominion-card-list/
