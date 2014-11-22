@@ -25,10 +25,10 @@ liftCard (Card { cID    = cardid
     lctype <- liftCtype cardType
     lcdescr <- liftCdescr cardDescr
     lccost <- lift cardCost
-    return $ RecConE (mkName "Card") [ (mkName "cID", lcid)
-                                     , (mkName "cType", lctype)
-                                     , (mkName "cDescr", lcdescr)
-                                     , (mkName "cCost", lccost) ]
+    return $ RecConE (mkName "RuntimeCard") [ (mkName "cID", lcid)
+                                            , (mkName "cType", lctype)
+                                            , (mkName "cDescr", lcdescr)
+                                            , (mkName "cCost", lccost) ]
 
 liftCtype TREASURE = return $ ConE (mkName "TREASURE")
 liftCtype ACTION = return $ ConE (mkName "ACTION")

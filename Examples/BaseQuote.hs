@@ -6,7 +6,7 @@ module Examples.BaseQuote where
 
 -- Importing the following was the most convenient.
 -- Until we figure out the better way to do it, if at all.
-import Language.DeckBuild.Syntax
+import Language.DeckBuild.Syntax hiding (cID, cType, cDescr, cCost)
 import Language.DeckBuild.Quote
 
 -- Example of all common cards:

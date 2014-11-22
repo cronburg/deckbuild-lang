@@ -14,14 +14,25 @@ make_deck_declaration ds = do
     turn_es <- mapM genDeckExp $ filter (not.isCard) ds
     let kingdomCardBody = NormalB $ ListE card_es
     let turnRulesBody   = NormalB $ ListE turn_es
-    let constructors = genCons ds
+    let name_constructors = genCons ds
+    let card_constructors = genCardCons
     return
-      [ DataD [] (mkName "CardName") [] constructors []
+      [ DataD [] (mkName "CardName") [] name_constructors []
+      , DataD [] (mkName "RuntimeCard") [] card_constructors []
       , FunD (mkName "kingdomCards") [Clause [] kingdomCardBody []]
       , FunD (mkName "turnRules")    [Clause [] turnRulesBody   []]
       ]
 
 genCons ds = [NormalC (mkCardName d) [] | d <- ds, isCard d]
+
+genCardCons =
+  [ RecC (mkName "RuntimeCard")
+    [ (mkName "cID",    IsStrict, ConT $ mkName "CardName")
+    , (mkName "cType",  IsStrict, ConT $ mkName "CardType")
+    , (mkName "cDescr", IsStrict, ConT $ mkName "CardDescr")
+    , (mkName "cCost",  IsStrict, ConT $ mkName "CardCost")
+    ]
+  ]
 
 isCard (DeckDeclCard c) = True
 isCard _                = False
