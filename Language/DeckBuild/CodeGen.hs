@@ -8,6 +8,8 @@ import Language.Haskell.TH.Syntax
 import Language.DeckBuild.Syntax
 import Data.Char (toUpper)
 
+things_derived = [mkName "Eq", mkName "Typeable", mkName "Show", mkName "Ord"]
+
 make_deck_declaration :: [DeckDecl] -> Q [Dec]
 make_deck_declaration ds = do
     card_es <- mapM genDeckExp $ filter      isCard  ds :: Q [Exp]
@@ -17,8 +19,8 @@ make_deck_declaration ds = do
     let name_constructors = genCons ds
     let card_constructors = genCardCons
     return
-      [ DataD [] (mkName "CardName") [] name_constructors [mkName "Eq", mkName "Typeable", mkName "Show"]
-      , DataD [] (mkName "RuntimeCard") [] card_constructors [mkName "Eq", mkName "Typeable", mkName "Show"]
+      [ DataD [] (mkName "CardName") [] name_constructors things_derived
+      , DataD [] (mkName "RuntimeCard") [] card_constructors things_derived
       , FunD (mkName "kingdomCards") [Clause [] kingdomCardBody []]
       , FunD (mkName "turnRules")    [Clause [] turnRulesBody   []]
       ]
