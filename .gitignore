@@ -27,9 +27,6 @@
 .*swp
 .*swo
 
-# ignore PDF files
-*.pdf
-
 # Generated cabal stuff
 .cabal-sandbox
 dist/
