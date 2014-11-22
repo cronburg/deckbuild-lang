@@ -10,12 +10,15 @@ import Data.Char (toUpper)
 
 make_deck_declaration :: [DeckDecl] -> Q [Dec]
 make_deck_declaration ds = do
-    es <- mapM genDeckExp ds :: Q [Exp]
-    let body = NormalB $ ListE es
+    card_es <- mapM genDeckExp $ filter      isCard  ds :: Q [Exp]
+    turn_es <- mapM genDeckExp $ filter (not.isCard) ds
+    let kingdomCardBody = NormalB $ ListE card_es
+    let turnRulesBody   = NormalB $ ListE turn_es
     let constructors = genCons ds
     return
       [ DataD [] (mkName "CardName") [] constructors []
-      , FunD (mkName "kingdomCards") [Clause [] body []]
+      , FunD (mkName "kingdomCards") [Clause [] kingdomCardBody []]
+      , FunD (mkName "turnRules")    [Clause [] turnRulesBody   []]
       ]
 
 genCons ds = [NormalC (mkCardName d) [] | d <- ds, isCard d]
