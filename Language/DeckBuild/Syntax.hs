@@ -10,7 +10,7 @@ import Data.Char (toUpper)
 
 data DeckDecl = DeckDeclCard  Card
               | DeckDeclTurn  Turn
-   deriving (Eq, Data, Typeable, Show)
+   deriving (Eq, Typeable, Show)
 
 -- Lift option:
 liftD (DeckDeclCard card) = liftCard card
@@ -93,10 +93,10 @@ liftPhaseName DrawP = return $ ConE (mkName "DrawP")
 
 -- Data declarations
 data CardType   = TREASURE | ACTION  | VICTORY
-    deriving (Eq, Data, Typeable, Show)
+    deriving (Eq, Typeable, Show)
 
 data EffectType = COINS    | ACTIONS | BUYS | CARDS | VICTORYPOINTS
-    deriving (Eq, Data, Typeable, Show)
+    deriving (Eq, Typeable, Show)
 
 type CardID     = String
 
@@ -105,17 +105,17 @@ data Card = Card
   , cType  :: CardType
   , cDescr :: CardDescr
   , cCost  :: CardCost
-  } deriving (Eq, Data, Typeable, Show)
+  } deriving (Eq, Typeable, Show)
 
 data CardDescr = CardDescr
   { primary :: [ Effect ]
   , other   ::   String
-  } deriving (Eq, Data, Typeable, Show)
+  } deriving (Eq, Typeable, Show)
 
 data Effect = Effect
   { amount     :: Int
   , effectType :: EffectType
-  } deriving (Eq, Data, Typeable, Show)
+  } deriving (Eq, Typeable, Show)
 
 type CardCost = Int
 
@@ -124,18 +124,18 @@ type TurnID = String
 data Turn = Turn
   { turnID     :: TurnID
   , turnPhases :: [Phase]
-  } deriving (Eq, Data, Typeable, Show)
+  } deriving (Eq, Typeable, Show)
 
 data Phase = Phase
   { phaseName :: PhaseName
   , phaseInt  :: PhaseInt
-  } deriving (Eq, Data, Typeable, Show)
+  } deriving (Eq, Typeable, Show)
 
 data PhaseInt = PhaseInt Int | All
-	deriving (Eq, Data, Typeable, Show)
+	deriving (Eq, Typeable, Show)
 
 data PhaseName = ActionP  | BuyP  | DiscardP | DrawP
- 	deriving (Eq, Data, Typeable, Show)
+ 	deriving (Eq, Typeable, Show)
 
 -- Do we need this? -- RLV
 -- qName :: QString -> String
