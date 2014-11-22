@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable,TemplateHaskell,ScopedTypeVariables,KindSignatures #-}
 module Language.DeckBuild.Syntax where
-import Language.Haskell.TH (Pat, Exp, Strict)
+import Language.Haskell.TH (Pat, Exp, Strict, Q)
 import Language.Haskell.TH.Syntax (lift, mkName, Exp( ConE ), Lift, Exp( ListE ), Exp( LitE ), Exp( RecConE ), Exp( AppE ))
 import Data.Generics (Data, Typeable)
 import Data.Char (toUpper)
@@ -13,10 +13,12 @@ data DeckDecl = DeckDeclCard  Card
    deriving (Eq, Typeable, Show)
 
 -- Lift option:
+liftD :: DeckDecl -> Q Exp
 liftD (DeckDeclCard card) = liftCard card
 liftD (DeckDeclTurn turn) = liftTurn turn
 
 -- Card lift functions
+liftCard :: Card -> Q Exp
 liftCard (Card { cID    = cardid
                , cType  = cardType
                , cDescr = cardDescr
@@ -32,10 +34,12 @@ liftCard (Card { cID    = cardid
                                             , (mkName "cDescr", lcdescr)
                                             , (mkName "cCost", lccost) ]
 
+liftCtype :: CardType -> Q Exp
 liftCtype TREASURE = return $ ConE (mkName "TREASURE")
 liftCtype ACTION = return $ ConE (mkName "ACTION")
 liftCtype VICTORY = return $ ConE (mkName "VICTORY")
 
+liftCdescr :: CardDescr -> Q Exp
 liftCdescr (CardDescr { primary = effects
                       , other = otherEffect }
                       ) = do
@@ -44,6 +48,7 @@ liftCdescr (CardDescr { primary = effects
     return $ RecConE (mkName "CardDescr") [ (mkName "primary", ListE es)
                                           , (mkName "other", o) ]
 
+liftEffect :: Effect -> Q Exp
 liftEffect (Effect { amount = amt
                    , effectType = etype }
                    ) = do
@@ -52,19 +57,16 @@ liftEffect (Effect { amount = amt
     return $ RecConE (mkName "Effect") [ (mkName "amount", a)
                                        , (mkName "effectType", e) ]
 
-liftEtype COINS = return conCoins
-liftEtype BUYS = return conBuys
-liftEtype ACTIONS = return conActions
-liftEtype CARDS = return conCards
-liftEtype VICTORYPOINTS = return conVictoryPoints
+liftEtype :: EffectType -> Q Exp
+liftEtype COINS = return $ ConE (mkName "COINS")
+liftEtype BUYS = return $ ConE (mkName "BUYS")
+liftEtype ACTIONS = return $ ConE (mkName "ACTIONS")
+liftEtype CARDS = return $ ConE (mkName "CARDS")
+liftEtype VICTORYPOINTS = return $ ConE (mkName "VICTORYPOINTS")
 
-conCoins = ConE (mkName "COINS")
-conActions = ConE (mkName "ACTIONS")
-conBuys = ConE (mkName "BUYS")
-conCards = ConE (mkName "CARDS")
-conVictoryPoints = ConE (mkName "VICTORYPOINTS")
 
 -- Card lift functions
+liftTurn :: Turn -> Q Exp
 liftTurn (Turn { turnID    = turnid
                , turnPhases = phases }
                ) = do
@@ -73,6 +75,7 @@ liftTurn (Turn { turnID    = turnid
     return $ RecConE (mkName "Turn") [ (mkName "turnID", ltid)
                                      , (mkName "turnPhases", ListE ps) ]
 
+liftPhase :: Phase -> Q Exp
 liftPhase (Phase { phaseName = pname
                  , phaseInt = pint }
                  ) = do
@@ -81,11 +84,13 @@ liftPhase (Phase { phaseName = pname
     return $ RecConE (mkName "Phase") [ (mkName "phaseName", a)
                                       , (mkName "phaseInt", p) ]
 
+liftPhaseInt :: PhaseInt -> Q Exp
 liftPhaseInt (PhaseInt phase) = do
     p <- lift phase
     return $ AppE (ConE $ mkName "PhaseInt") p 
 liftPhaseInt All = return $ ConE (mkName "All")
 
+liftPhaseName :: PhaseName -> Q Exp
 liftPhaseName ActionP = return $ ConE (mkName "ActionP")
 liftPhaseName BuyP = return $ ConE (mkName "BuyP")
 liftPhaseName DiscardP = return $ ConE (mkName "DiscardP")
