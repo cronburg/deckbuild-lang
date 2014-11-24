@@ -1,0 +1,54 @@
+\documentclass[color = usenames]{beamer}
+\mode<presentation>
+%%%\usepackage{beamerthemesplit}
+%%%\usepackage{latexsym}
+\usepackage{amsmath, amssymb}
+%%%\usepackage{xypic}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wrapfig}
+\usetheme{Boadilla}
+\usepackage{url}
+
+\smallskipamount=3pt
+\medskipamount=10pt
+
+\title{Deckbuild: A Declarative Domain-Specific Language for Card Game Design}
+\author{Karl Cronburg, Raoul Veroy, Matthew Ahrens}
+\institute{Tufts University}
+\date{}
+
+\begin{document}
+\frame{\titlepage}
+
+% TODO: maybe split the intro into multiple tex files
+% Introduction (questions 1,2,3,4)
+%   * Domain of language?
+%   * Intended users? Programming experience?
+%   * Goals of language?
+%   * Existing languages ill-suited?
+\input{intro.tex}
+
+% Features & sample program (with features) (questions 5,6)
+\input{features.tex}
+
+% Demonstration (question 7)
+\input{demo.tex}
+
+% Implementation & run-time system services (questions 8,9)
+\input{imp.tex}
+
+% Evaluation of EDSL (question 11)
+\input{eval.tex}
+
+% Future work - tools & libraries (questions 10,12)
+\input{future.tex}
+
+% Conclusion:
+\input{conc.tex}
+
+\end{document}
