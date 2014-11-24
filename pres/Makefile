@@ -8,5 +8,5 @@ $(FN).pdf: $(TEX_FILES)
 	pdflatex $(FN).tex
 
 clean:
-	rm -f *.aux *.log *.nav *.out *.snm *.toc
+	rm -f *.aux *.log *.nav *.out *.snm *.toc $(FN).pdf
 
