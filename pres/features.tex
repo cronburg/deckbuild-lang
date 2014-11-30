@@ -1,0 +1,111 @@
+
+% Describe the features your language provides and explain why this set of
+% features is appropriate.
+\begin{frame} \frametitle{Language Features}
+\end{frame}
+
+% Show at least one sample program in your language and explain what it does.
+\begin{frame}[fragile=singleslide] \frametitle{Example Program - Input}
+\begin{columns}
+  % FIRST COLUMN:
+  \column{.5\linewidth}
+    \begin{minted}
+    [ frame=lines
+    , framesep=2mm
+    , fontsize=\tiny
+%    , linenos
+    ] {haskell}
+[deck|
+card Cellar  :: Action {
+  +1 actions
+  "Discard any number of cards."
+  " +1 Card per card discarded"
+} costs 2
+
+card Chapel  :: Action {
+  "Trash up to 4 cards from your hand"
+} costs 2
+
+card Village :: Action {
+  +1 cards
+  +2 actions
+} costs 3
+
+card Woodcutter :: Action {
+  +1 buys
+  +2 coins
+} costs 3
+
+card Copper :: Treasure {
+  +1 coins
+} costs 0
+
+card Silver :: Treasure {
+  +2 coins
+} costs 3
+    \end{minted}
+
+  % SECOND COLUMN:
+  \column{.5\linewidth}
+    \begin{minted}
+    [ frame=lines
+    , framesep=2mm
+    , fontsize=\tiny
+%    , linenos
+    ] {haskell}
+card Gold :: Treasure {
+  +3 coins
+} costs 6
+
+card Estate :: Victory {
+  +1 victory
+} costs 2
+
+card Duchy :: Victory {
+  +3 victory
+} costs 5
+
+card Province :: Victory {
+  +6 victory
+} costs 8
+
+turn Dominion_Standard {
+  action 1
+  buy 1
+  discard all
+  draw 5
+}
+
+
+
+
+
+|]
+    \end{minted}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile=singleslide] \frametitle{Example Program - Quasiquoter \& Code Generator}
+
+\inputminted
+[ frame=lines
+, framesep=2mm
+, fontsize=\fontsize{1mm}{1mm} %\tiny
+, linenos
+] {haskell}{CodeGen.hs}
+
+\end{frame}
+
+\begin{frame} \frametitle{Example Program - CodeGen Output}
+\inputminted
+[ frame=lines
+, framesep=2mm
+, fontsize=\fontsize{1mm}{1mm} %\tiny
+, linenos
+] {haskell}{QuoteOutput.hs}
+\end{frame}
+
+
+
+
+
