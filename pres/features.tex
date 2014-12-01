@@ -2,6 +2,14 @@
 % Describe the features your language provides and explain why this set of
 % features is appropriate.
 \begin{frame} \frametitle{Language Features}
+\begin{itemize}
+\item Can declaratively enumerate 
+  \begin{itemize}
+  \item Cards    - name, type, effects, cost
+  \item Rulesets - e.g. how many cards you draw per turn
+  \end{itemize}
+\item Can define complex card effects directly from Haskell
+\end{itemize}
 \end{frame}
 
 % Show at least one sample program in your language and explain what it does.
@@ -105,7 +113,23 @@ turn Dominion_Standard {
 ] {haskell}{QuoteOutput.hs}
 \end{frame}
 
-
-
-
+\begin{frame}[fragile=singleslide] \frametitle{Example Program - Complex Card Effects}
+\begin{columns}
+  \column{.5\linewidth}
+    \begin{itemize}
+    \item Can reference quasiquoted EDSL code from Haskell
+    \item Future: design imperative-friendly (non-Haskell) EDSL for specifying
+          complex card effects
+    \item Example below - implementation of \verb|CELLAR| effects
+    \end{itemize}
+  \column{.5\linewidth} \begin{center} \includegraphics[width=.4\columnwidth]{cellar.jpg} \end{center}
+\end{columns}
+\inputminted
+[ frame=lines
+, framesep=2mm
+, fontsize=\fontsize{1mm}{1mm} %\tiny
+, linenos
+] {haskell}{ComplexEffects.hs}
+\footnotetext[1]{\tiny card image \& content by D. X. Vaccarino}
+\end{frame}
 
