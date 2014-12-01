@@ -1,5 +1,35 @@
 
-\begin{frame} \frametitle{Run-time System}
-% Haskell game-engine
+\begin{frame}[fragile=singleslide] \frametitle{Run-time System}
+\begin{center}
+\begin{Verbatim}[fontsize=\tiny]
+λ> runGreedy (0.5, 0.5)
+Player1:
+    name   = "Greedy1"
+    hand   = [ESTATE, GOLD, PROVINCE, PROVINCE, SILVER]
+    inPlay = []
+    deck   = [SILVER,   PROVINCE, COPPER, SILVER,  COPPER
+             ,ESTATE,   COPPER,   COPPER, VILLAGE, VILLAGE
+             ,PROVINCE, ESTATE,   SILVER, COPPER]
+    dscrd  = [SILVER, SILVER, SILVER, COPPER, COPPER, PROVINCE]
+    buys=1, actions=1, money=0
+
+Player2:
+    name   = "Greedy2"
+    hand   = [COPPER, COPPER, COPPER, COPPER, VILLAGE]
+    inPlay = []
+    deck   = [SILVER,   SILVER, GOLD, COPPER, COPPER,   ESTATE
+             ,GOLD,     ESTATE, GOLD, ESTATE, PROVINCE, VILLAGE
+             ,PROVINCE, GOLD]
+    dscrd  = [SILVER, COPPER, SILVER, SILVER, SILVER, PROVINCE]
+    buys=1, actions=1, money=0
+
+Trash: []
+Supply: [(COPPER,60),  (CELLAR,10),  (MOAT,10),       (ESTATE,8)
+        ,(SILVER,27),  (VILLAGE,6),  (WOODCUTTER,10), (WORKSHOP,10)
+        ,(MILITIA,10), (REMODEL,10), (SMITHY,10),     (MARKET,10)
+        ,(MINE,10),    (DUCHY,8),    (GOLD,25),       (PROVINCE,0)]
+Turn #: 30
+\end{Verbatim}
+\end{center}
 \end{frame}
 
