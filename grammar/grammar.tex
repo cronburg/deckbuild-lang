@@ -1,0 +1,57 @@
+% -----------------------------------------------------------------------------
+% - Top-level decls:
+
+<deckDecls>  ::= <deckDecl>*
+
+<deckDecl>   ::= <cardDecl> | <turnDecl>
+
+% -----------------------------------------------------------------------------
+% - Card declaration grammar rules:
+
+<cardDecl>    ::= "card" <cardID> "::" <cardType> "{" <cardDescr> "}" "costs" <intLit>
+
+<cardDescr>   ::= <effectDescr>* <englishDescr>
+
+<englishDescr> ::= <stringLit>*
+
+<effectDescr>  ::= <plusOrMinus><intLit> <effectType>
+
+<plusOrMinus> ::= "+" | "-" 
+
+% -----------------------------------------------------------------------------
+% - Phase / rulebook declaration grammar rules:
+% -   TODO: custom named phases (future), rulebook for custom rules other than turns
+
+<turnDecl>   ::= "turn" <turnID> "{" <phaseDescr>* "}" 
+
+<phaseDescr> ::= <phaseName> <phaseInt>
+
+<phaseInt>   ::= <intLit> | "all"
+
+% looks like: phases {Action 1 Buy 1 Discard all Draw 5} for standard rules.
+
+% -----------------------------------------------------------------------------
+% - Keyword and built-in-to-parsec grammar rules:
+<effectType>  ::= "actions"   | "coins"  | "buys" | "cards" | "victory"
+
+<cardType>    ::= "Treasure" | "Action" | "Victory"
+
+<phaseName>   ::= "action"   | "buy"    | "discard" | "draw"
+
+<*ID>         ::= <identifier>
+
+<*Lit>      ::= As defined in Text.Parsec.Token
+
+<identifier>  ::= As defined in Text.Parsec.Token
+
+% Note that we don't actually need to specify the type as that is implied by the
+% action
+% Maybe add these back? Not sure if we need these. - Raoul
+%
+% <charLit>    ::= As defined in Text.Parsec.Token
+%
+% <stringLit>  ::= As defined in Text.Parsec.Token
+%
+% <identifier> ::= As defined in Text.Parsec.Token
+%
+% <whiteSpace> ::= As defined in Text.Parsec.Token
