@@ -26,12 +26,12 @@ feeling that they will interact well together. Coming up with specific
 numbers to put on the cards however requires \emph{exploring} the state
 space of possible cards.
 
-As discussed earlier in DeckBuild's {\bf Goals} (Section \ref{sec:goals}),
-this process is indicative of what DeckBuild should give a game designer.
+This process is indicative of what DeckBuild should give a game designer.
 Although this set of features leaves much to be desired (see Section
 \ref{sec:future} for full discussion), we believe it to be appropriate
-for our goals. See the last page of this document for a complete grammar
-for DeckBuild.
+for our goals.
+
+See the last appendix for a complete grammar for DeckBuild.
 
 % TODO: figure out how to get RHS grammar indenting to work properly...
 %\subsection{Grammar}
@@ -48,19 +48,99 @@ for DeckBuild.
 \inputminted
 [ %frame=lines
 , framesep=2mm
-, fontsize=\small %\tiny
+, fontsize=\footnotesize %\small %\tiny
 %, linenos
 ] {haskell}{BaseQuote.hs}
 
 Above is a complete example program. The program defines ten cards and
 one turn mechanics declaration. The ten cards are parsed and then compiled
-into a Haskell list \mintinline{haskell}{kingdomCards :: Card}.
+into a Haskell function \mintinline{haskell}{kingdomCards :: [RuntimeCard]}.
+The ten cards are also parsed into an enumeration data type where,
+for example, \mintinline{haskell}{VILLAGE :: CardName}. This in particular
+facilitates the use of host-language features of Haskell when designing
+cards with decidedly non-declarative effects (see
+Appendix \ref{appendix:complexcard} ) for an example).
+The turn declarations are parsed and compiled in the same manner as the
+card declarations, except they are compiled into a Haskell function
+\mintinline{haskell}{turnRules :: [Turn]}.
 
-\section{Implementation}
-\subsection{QuasiQuoter \& Compiler}
 % 7. Describe how you implemented the language.
+The compilation just described is performed using Haskell's quasiquotation
+facilities. As a result, the recommended programming pattern is to define
+a single \mintinline{haskell}{[deck| ... |]} quasiquoted program at the
+beginning of a Haskell module. The Haskell module is named based on why the cards in
+the module are being group together. For example, a deckbuilding game based
+on World War II might have a module named `WWII' containing cards named
+after airplanes used in World War II.
+
+With a complete deck of cards defined in a module, the runtime system now
+consumes said module. Presently the runtime system can be interfaced with
+in three ways:
+
+\begin{itemize}
+\item As a Haskell backend API for performing probabilistic inference
+      on the possible states of the game given a model for the play
+      heuristics of two computer-players playing the game. This is where
+      the Machine Learning users (with Haskell experience) interested
+      in deckbuilding games can use DeckBuild.
+\item As a web socket API for designing web-based deckbuilding games.
+      This is where web programmers (with minimal to no Haskell experience)
+      can make use of DeckBuild to create a deck build game and corresponding
+      web site tailored to their genre of interest.
+\item As a command-line interface for humans to play against one another
+      (making use of the web sockets API). This is where a game designer can
+      have human subjects play-test their game without having to print out
+      mock-ups of cards.
+\end{itemize}
+
+% 8. Explain what if any services are provided in a “run-time system.”
+The runtime system itself is implemented as Haskell cabal package separate
+from (but referencing / importing) the DeckBuild language package. It is
+implemented in the state monad for maintaining a stateful view of the game
+as turns progress in the game. We also use the IO monad for executing
+player-based events in the game. The core functionality of the runtime system
+handles functionality common to all deckbuilding games comprising:
+
+\begin{itemize}
+\item Maintaining piles of cards
+  \begin{itemize}
+  \item Moving cards between decks (enforcing no `card-duplication-bugs')
+  \item 
+  \end{itemize}
+\item Library of:
+  \begin{itemize}
+  \item Getters and setters for \mintinline{haskell}{Game} state
+  \item Execution of common events (draw, shuffle, discard, ...)
+  \item Common \mintinline{haskell}{Game} state questions:
+    \begin{itemize}
+    \item How many cards of type `X' are in my hand?
+    \item Can I currently buy card `Y'?
+    \item Can I currently play card `Z'?
+    \item Has the game ended? If so, who won?
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+The use of Haskell as the host-language of DeckBuild gave the runtime system
+a lot of power in being able to make guarantees about the state of a game.
+In particular the first-class nature of IO lets the runtime system divide
+up the portions of the system which are and are not allowed to perform IO.
+This division makes IO bugs impossible to create when designing and writing
+purely functional components of the runtime system. Similarly, the immutable
+nature of Haskell data instances makes shared-memory bugs impossible. This is
+important in DeckBuild's runtime system when communication occurs between the
+core components of the runtime system (functions inside the state monad)
+and the computer-player \& web socket components (and other components not
+allowed to directly alter the state of the game).
+
+In the current iteration of our language and the runtime system, some kinds
+of concepts such as \mintinline{haskell}{ACTIONS} and \mintinline{haskell}{COINS}
+are hard-coded into the runtime system and as concrete syntax in the language.
+These names are not inherently common to all deckbuilding games, and will be
+abstracted out in a future iteration of the DeckBuild language. See Section
+\ref{sec:future} for a discussion of how this and other parts of the runtime
+system and language will be given better abstractions in the future.
 
 \subsection{Runtime System}
-% 8. Explain what if any services are provided in a “run-time system.”
 
 
