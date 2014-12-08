@@ -10,3 +10,26 @@
 %, linenos
 ] {haskell}{../pres/QuoteOutput.hs}
 
+\section{Example Program - Complex Card Effects}
+
+\inputminted
+[ frame=lines
+, framesep=2mm
+, fontsize=\fontsize{1mm}{1mm} %\tiny
+, linenos
+] {haskell}{ComplexEffects.hs}
+
+The code above defines the state transformation to be performed on the game when
+a \mintinline{haskell}{CELLAR} is played. The state monad is required because
+the effect moves cards around between piles in the state of the game. The IO monad
+is also required because the \mintinline{haskell}{CELLAR} effect requires asking
+the player to pick cards. This example also illustrates the use of:
+\begin{itemize}
+\item \mintinline{haskell}{cards   :: Pile   -> [CardName]}, 
+\item \mintinline{haskell}{hand    :: Player -> Pile}
+\item \mintinline{haskell}{p1      :: Game   -> Player}
+\item \mintinline{haskell}{mayPick :: Game   -> CardName -> IO (Maybe CardName)}
+\end{itemize}
+These are the kinds of operations DeckBuild will support natively in the
+future when it has support for function declarations and expressions.
+
