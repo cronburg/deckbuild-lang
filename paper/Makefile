@@ -9,7 +9,6 @@ paper: *.tex *.bib *.cls
 	(cd ../grammar; make)
 	pdftk paper.pdf ../grammar/grammar.pdf cat output paper2.pdf
 	mv paper2.pdf paper.pdf
-	cp paper.pdf ~/public_html/
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.pdf *.pyg
