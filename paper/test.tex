@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{syntax}
+\usepackage{minted}
+
+\begin{document}
+
+  You can use \mintinline{latex}{\mintinline{latex}{your $code$ goes here}} of
+  the minted~2 package to highlight source code inline. If you already use
+  \mintinline{latex}{\usepackage{minted}} just download
+  github.com/gpoore/minted/blob/master/source/minted.sty to your project
+  directory.
+
+\paragraph{Default settings}
+\begin{grammar}
+
+<statement> ::= <ident> `=' <expr> 
+\alt `for' <ident> `=' <expr> `to' <expr> `do' <statement> 
+\alt `{' <stat-list> `}' 
+\alt <empty> 
+
+<stat-list> ::= <statement> `;' <stat-list> | <statement> 
+
+\end{grammar}
+\paragraph{Increase the two lengths}
+\setlength{\grammarparsep}{20pt plus 1pt minus 1pt} % increase separation between rules
+\setlength{\grammarindent}{12em} % increase separation between LHS/RHS 
+
+\begin{grammar}
+
+<statement> ::= <ident> `=' <expr> 
+\alt `for' <ident> `=' <expr> `to' <expr> `do' <statement> 
+\alt `{' <stat-list> `}' 
+\alt <empty> 
+
+<stat-list> ::= <statement> `;' <stat-list> | <statement> 
+
+\end{grammar}
+
+\end{document}
