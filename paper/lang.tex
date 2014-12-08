@@ -30,20 +30,31 @@ As discussed earlier in DeckBuild's {\bf Goals} (Section \ref{sec:goals}),
 this process is indicative of what DeckBuild should give a game designer.
 Although this set of features leaves much to be desired (see Section
 \ref{sec:future} for full discussion), we believe it to be appropriate
-for our goals.
+for our goals. See the last page of this document for a complete grammar
+for DeckBuild.
 
-\subsection{Grammar}
-
+% TODO: figure out how to get RHS grammar indenting to work properly...
+%\subsection{Grammar}
+%\begin{footnotesize}
+%\begin{grammar}
+%\input{../grammar/grammar.tex}
+%\end{grammar}
+%\end{footnotesize}
 
 \subsection{Example Program}
 % 6. Show at least one sample program in your language and explain what it
 % does.
+
 \inputminted
 [ %frame=lines
 , framesep=2mm
 , fontsize=\small %\tiny
 %, linenos
 ] {haskell}{BaseQuote.hs}
+
+Above is a complete example program. The program defines ten cards and
+one turn mechanics declaration. The ten cards are parsed and then compiled
+into a Haskell list \mintinline{haskell}{kingdomCards :: Card}.
 
 \section{Implementation}
 \subsection{QuasiQuoter \& Compiler}

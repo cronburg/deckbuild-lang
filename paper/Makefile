@@ -6,6 +6,9 @@ paper: *.tex *.bib *.cls
 #	bibtex paper
 	pdflatex -shell-escape paper.tex
 	pdflatex -shell-escape paper.tex
+	(cd ../grammar; make)
+	pdftk paper.pdf ../grammar/grammar.pdf cat output paper2.pdf
+	mv paper2.pdf paper.pdf
 	cp paper.pdf ~/public_html/
 
 clean:

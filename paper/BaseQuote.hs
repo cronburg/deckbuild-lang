@@ -49,3 +49,4 @@ turn Dominion_Standard {
   discard all
   draw 5
 }
+|]
