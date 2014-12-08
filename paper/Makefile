@@ -9,5 +9,5 @@ paper: *.tex *.bib *.cls
 	cp paper.pdf ~/public_html/
 
 clean:
-	rm -f *.aux *.bbl *.blg *.log *.pdf
+	rm -f *.aux *.bbl *.blg *.log *.pdf *.pyg
 
