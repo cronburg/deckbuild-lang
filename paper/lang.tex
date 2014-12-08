@@ -94,12 +94,12 @@ in three ways:
 \end{itemize}
 
 % 8. Explain what if any services are provided in a “run-time system.”
-The runtime system itself is implemented as Haskell cabal package separate
+The runtime system itself is implemented as a Haskell cabal package separate
 from (but referencing / importing) the DeckBuild language package. It is
 implemented in the state monad for maintaining a stateful view of the game
-as turns progress in the game. We also use the IO monad for executing
-player-based events in the game. The core functionality of the runtime system
-handles functionality common to all deckbuilding games comprising:
+as turns progress. We also use the IO monad for executing
+player-based events in the game. The core components of the runtime system
+handle functionality common to all deckbuilding games comprising:
 
 \begin{itemize}
 \item Maintaining piles of cards
@@ -110,7 +110,15 @@ handles functionality common to all deckbuilding games comprising:
 \item Library of:
   \begin{itemize}
   \item Getters and setters for \mintinline{haskell}{Game} state
-  \item Execution of common events (draw, shuffle, discard, ...)
+  \item Execution of common events:
+    \begin{itemize}
+    \item \mintinline{haskell}{draw     :: State Game ()}
+    \item \mintinline{haskell}{shuffle  :: State Game ()}
+    \item \mintinline{haskell}{discard  :: State Game ()}
+    \item \mintinline{haskell}{doPhase  :: State Game ()}
+    \item \mintinline{haskell}{takeTurn :: State Game ()}
+    \item \mintinline{haskell}{runGame  :: State Game ()}
+    \end{itemize}
   \item Common \mintinline{haskell}{Game} state questions:
     \begin{itemize}
     \item How many cards of type `X' are in my hand?
@@ -133,8 +141,8 @@ core components of the runtime system (functions inside the state monad)
 and the computer-player \& web socket components (and other components not
 allowed to directly alter the state of the game).
 
-In the current iteration of our language and the runtime system, some kinds
-of concepts such as \mintinline{haskell}{ACTIONS} and \mintinline{haskell}{COINS}
+In the current iteration of our language and the runtime system, certain
+concepts such as \mintinline{haskell}{ACTIONS} and \mintinline{haskell}{COINS}
 are hard-coded into the runtime system and as concrete syntax in the language.
 These names are not inherently common to all deckbuilding games, and will be
 abstracted out in a future iteration of the DeckBuild language. See Section
