@@ -1,12 +1,13 @@
 
 all: paper
 
+tex=pdflatex -shell-escape
+
 paper: *.tex *.bib *.cls
-#	pdflatex paper.tex
-#	bibtex paper
+	$(tex) paper.tex
 	bibtex paper
-	pdflatex -shell-escape paper.tex
-	pdflatex -shell-escape paper.tex
+	$(tex) paper.tex
+	$(tex) paper.tex
 	(cd ../grammar; make)
 	pdftk paper.pdf ../grammar/grammar.pdf cat output paper2.pdf
 	mv paper2.pdf paper.pdf
