@@ -1,5 +1,6 @@
 %\onecolumngrid
 \clearpage
+\onecolumn
 \appendix
 
 \section{Example Program - Haskell Output}
@@ -15,9 +16,9 @@
 \inputminted
 [ frame=lines
 , framesep=2mm
-, fontsize=\fontsize{1mm}{1mm} %\tiny
+, fontsize=\small %\fontsize{1mm}{1mm} %\tiny
 , linenos
-] {haskell}{ComplexEffects.hs}
+] {haskell}{../pres/ComplexEffects.hs}
 
 The code above defines the state transformation to be performed on the game when
 a \mintinline{haskell}{CELLAR} is played. The state monad is required because
@@ -32,4 +33,57 @@ the player to pick cards. This example also illustrates the use of:
 \end{itemize}
 These are the kinds of operations DeckBuild will support natively in the
 future when it has support for function declarations and expressions.
+
+\section{Runtime System - State Format}
+\begin{small}
+$\lambda$\verb|> runGreedy (0.5, 0.5)|
+\end{small}
+\begin{Verbatim}[fontsize=\small]
+Player1:
+    name   = "Greedy1"
+    hand   = [ESTATE, GOLD, PROVINCE, PROVINCE, SILVER]
+    inPlay = []
+    deck   = [SILVER,   PROVINCE, COPPER, SILVER,  COPPER
+             ,ESTATE,   COPPER,   COPPER, VILLAGE, VILLAGE
+             ,PROVINCE, ESTATE,   SILVER, COPPER]
+    dscrd  = [SILVER, SILVER, SILVER, COPPER, COPPER, PROVINCE]
+    buys=1, actions=1, money=0
+
+Player2:
+    name   = "Greedy2"
+    hand   = [COPPER, COPPER, COPPER, COPPER, VILLAGE]
+    inPlay = []
+    deck   = [SILVER,   SILVER, GOLD, COPPER, COPPER,   ESTATE
+             ,GOLD,     ESTATE, GOLD, ESTATE, PROVINCE, VILLAGE
+             ,PROVINCE, GOLD]
+    dscrd  = [SILVER, COPPER, SILVER, SILVER, SILVER, PROVINCE]
+    buys=1, actions=1, money=0
+
+Trash: []
+Supply: [(COPPER,60),  (CELLAR,10),  (MOAT,10),       (ESTATE,8)
+        ,(SILVER,27),  (VILLAGE,6),  (WOODCUTTER,10), (WORKSHOP,10)
+        ,(MILITIA,10), (REMODEL,10), (SMITHY,10),     (MARKET,10)
+        ,(MINE,10),    (DUCHY,8),    (GOLD,25),       (PROVINCE,0)]
+Turn #: 30
+\end{Verbatim}
+
+Above is a snapshot of the state of the runtime system after two
+probabilistic computer-player models played a game against each other.
+The player models are given direct access to this game-state information
+on each turn of the game. In future iterations of the runtime system
+their will likely be a feature whereby the players can `remember' what
+they did on previous turns.
+
+In the snapshot, the \mintinline{haskell}{Supply :: [(CardName,Int)]} where
+the \mintinline{haskell}{Int} corresponds to the number of copies of
+that particular card in the supply. The runtime system is implemented in
+this manner so as to reduce the space-complexity constant. In a future
+iteration of the runtime system, game designers will be
+able to turn on and off these kinds of optimizations on a
+per-\mintinline{haskell}{Pile} basis.
+
+Similarly, a game designer may wish to specify the order in which cards
+appear in a \mintinline{haskell}{Pile}. In the current implementation
+of the runtime system, ordering of most piles defaults to LIFO queue
+order (except a player's hand which is shown alphabetically).
 
