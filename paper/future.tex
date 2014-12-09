@@ -4,10 +4,16 @@
 % 10. Discuss what you would do next on your language if you were going to
 %     continue working on it.
 
-For the language itself, we would like to develop a type system that models the
-cards and the rules of the game. This would lead to development of a
-type-checker that we envision would help designers catch game design errors
-earlier.
+We would like to add a number of features to the language. First, we would like
+to add syntax for more complicated effects. Currently, we only support action
+and buy effects. The original game of Dominion allowed for more complex actions
+such as drawing multiple cards and attacking other players. This would
+complicate the language but is necessary to to capture the essence of the
+original game.
+
+We would also like to develop a type system that models the cards and the rules
+of the game. This would lead to development of a type-checker that we envision
+would help designers catch game design errors earlier.
 
 We would also like to have more relevant and useful debugging information.
 Currently debugging information is limited to line numbers in the source file.
