@@ -4,6 +4,7 @@ all: paper
 paper: *.tex *.bib *.cls
 #	pdflatex paper.tex
 #	bibtex paper
+	bibtex paper
 	pdflatex -shell-escape paper.tex
 	pdflatex -shell-escape paper.tex
 	(cd ../grammar; make)
@@ -12,4 +13,3 @@ paper: *.tex *.bib *.cls
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.pdf *.pyg
-
