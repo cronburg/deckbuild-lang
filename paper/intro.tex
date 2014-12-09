@@ -37,6 +37,15 @@ open source project by Robert Speer that is a Dominion Simulator written in coff
 Dominiate provides a way for end users to specify policies for Dominion AI in terms of:
 what priority to buy cards in, what priority to play cards in, and other heuristics available
 to the player at any game state.
+\\
+While DeckBuild and Dominiate share a common goal of letting users evaluate
+strategies of given combinations of cards, Dominiate does not give support for arbitrary or new cards.
+Logic for cards and rules is distributed across its runtime system making it
+difficult to add functionality for new cards. Dominiate can then be seen not as a language competitor
+ for game makers to compare, but rather a runtime system that DeckBuild would hope to leverage in the
+ future as an output format. Specifially, it would benefit both communities to be able to specify
+ cards and rules in DeckBuild, but output cofeescript source for use in the Dominiate simulator.
+\\
 \begin{figure}
 \inputminted
 [ %frame=lines
@@ -46,13 +55,6 @@ to the player at any game state.
 ] {cfs}{SimpleMoney.coffee}
 \caption{An example heurisitc written in Dominiate}
 \end{figure}
-While DeckBuild and Dominiate share a common goal of letting users evaluate
-strategies of given combinations of cards, Dominiate does not give support for arbitrary or new cards.
-Logic for cards and rules is distributed across its runtime system making it
-difficult to add functionality for new cards. Dominiate can then be seen not as a language competitor
- for game makers to compare, but rather a runtime system that DeckBuild would hope to leverage in the
- future as an output format. Specifially, it would benefit both communities to be able to specify
- cards and rules in DeckBuild, but output cofeescript source for use in the Dominiate simulator.
 \section{Goals} \label{sec:goals}
 DeckBuild is at its core a way for card game makers to describe cards and provide that description
 for use in general purpose programs or tools. Our goals reflect that and are more end user centered than
