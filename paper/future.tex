@@ -1,0 +1,32 @@
+
+\section{Future Work}
+\label{sec:future}
+% 10. Discuss what you would do next on your language if you were going to
+%     continue working on it.
+
+We would like to add a number of features to the language. First, we would like
+to add syntax for more complicated effects. Currently, we only support action
+and buy effects. The original game of Dominion allowed for more complex actions
+such as drawing multiple cards and attacking other players. This would
+complicate the language but is necessary to to capture the essence of the
+original game.
+
+We would also like to develop a type system that models the cards and the rules
+of the game. This would lead to development of a type-checker that we envision
+would help designers catch game design errors earlier.
+
+We would also like to have more relevant and useful debugging information.
+Currently debugging information is limited to line numbers in the source file.
+This would not be very useful to non-Haskell programmers.
+
+For a better game design experience, we envision an automated card balancer that
+attempts to balance the different design axes. While this isn't related to the
+language, we think this would be a useful tool that could drive greater adoption
+of DeckBuild.
+
+The runtime system would ultimately be the tipping point for designers. Even if
+game designers could easily specify the cards and game mechanics in DeckBuild,
+they would have no incentive to do so if they had to implement the runtime
+system too. To start with, we would like to have graphical client-server
+support, markup language conversion tools, and a library of AI players that
+designers can choose from.
