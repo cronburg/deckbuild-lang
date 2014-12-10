@@ -42,7 +42,6 @@ Dominiate provides a way for end users to specify policies of a Dominion AI in t
 \item Priority to play cards in.
 \item Other heuristics available to the player at any game state.
 \end{itemize}
-\\
 While DeckBuild and Dominiate share a common goal of letting users evaluate
 strategies of given combinations of cards, Dominiate does not include support for new cards.
 Logic for cards and rules is spread across its runtime system making it
@@ -115,7 +114,6 @@ the card with a new system.
 \item Through good tool support and out-of-the-box functionality, we hope to abstract away most of the common
 boiler plate the programmer would want to write such as a generic card game simulator or client-server system.
 \end{itemize}
-\\
 For this initial implementation, we also measure the effectiveness in terms of the expressiveness that the card game designer gets
 without having to delegate tasks to their programmer. The card game designer should be able to use DeckBuild to give a non-ambiguous
 description of what she wants without necessarily having to tell the programmer in English.
@@ -123,4 +121,3 @@ DeckBuild is therefore a success if one is able to describe any arbitrary cards 
 official Dominion set. We hope to show that these aspects of our language are complete while still remaining robust enough to describe any
 new card. The observable metric of how robust DeckBuild is can be then seen as how well we minimize the amount of code the programmer has to
 write in using the runtime library when providing functionality for new cards.
-
