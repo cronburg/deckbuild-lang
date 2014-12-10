@@ -55,8 +55,8 @@ See the last appendix for a complete grammar for DeckBuild.
 Above is a complete example program. The program defines ten cards and
 one turn mechanics declaration. The ten cards are parsed and then compiled
 into a Haskell function \mintinline{haskell}{kingdomCards :: [RuntimeCard]}.
-The ten cards are also parsed into an enumeration data type where,
-for example, \mintinline{haskell}{VILLAGE :: CardName}. This in particular
+The ten cards are also parsed into an enumeration data type such as
+\mintinline{haskell}{VILLAGE :: CardName}. This in particular
 facilitates the use of host-language features of Haskell when designing
 cards with decidedly non-declarative effects (see
 Appendix \ref{appendix:complexcard} ) for an example).
@@ -69,13 +69,13 @@ The compilation just described is performed using Haskell's quasiquotation
 facilities. As a result, the recommended programming pattern is to define
 a single \mintinline{haskell}{[deck| ... |]} quasiquoted program at the
 beginning of a Haskell module. The Haskell module is named based on why the cards in
-the module are being group together. For example, a deckbuilding game based
+the module are being grouped together. For example, a deckbuilding game based
 on World War II might have a module named `WWII' containing cards named
 after airplanes used in World War II.
 
-With a complete deck of cards defined in a module, the runtime system now
-consumes said module. Presently the runtime system can be interfaced with
-in three ways:
+The runtime system then imports this module that contains a complete deck of
+cards compiled from the DeckBuild program. Presently the runtime system can be
+interfaced with in three ways:
 
 \begin{itemize}
 \item As a Haskell backend API for performing probabilistic inference
@@ -131,7 +131,7 @@ handle functionality common to all deckbuilding games comprising:
 
 The use of Haskell as the host-language of DeckBuild gave the runtime system
 a lot of power in being able to make guarantees about the state of a game.
-In particular the first-class nature of IO lets the runtime system divide
+In particular, the first-class nature of IO lets the runtime system divide
 up the portions of the system which are and are not allowed to perform IO.
 This division makes IO bugs impossible to create when designing and writing
 purely functional components of the runtime system. Similarly, the immutable
@@ -143,7 +143,7 @@ allowed to directly alter the state of the game).
 
 In the current iteration of our language and the runtime system, certain
 concepts such as \mintinline{haskell}{ACTIONS} and \mintinline{haskell}{COINS}
-are hard-coded into the runtime system and as concrete syntax in the language.
+are hard-coded in the runtime system and in the language as concrete syntax.
 These names are not inherently common to all deckbuilding games, and will be
 abstracted out in a future iteration of the DeckBuild language. See Section
 \ref{sec:future} for a discussion of how this and other parts of the runtime

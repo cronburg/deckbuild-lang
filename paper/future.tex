@@ -15,6 +15,14 @@ We would also like to develop a type system that models the cards and the rules
 of the game. This would lead to development of a type-checker that we envision
 would help designers catch game design errors earlier.
 
+We also plan to tweak the language with respect to how much is built into the
+language and how much is made generic. For example, \mintinline{haskell}{COINS}
+are DeckBuild primitives, but the user may be designing a game that doesn't use
+or need money. One possible solution is to provide common game artifacts such as
+money as libraries that use more generic primitives. For example, we may have a
+\mintinline{haskell}{RESOURCE} language primitive that may be configured to give
+the same effect as \mintinline{haskell}{COINS}.
+
 We would also like to have more relevant and useful debugging information.
 Currently debugging information is limited to line numbers in the source file.
 This would not be very useful to non-Haskell programmers.
