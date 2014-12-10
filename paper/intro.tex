@@ -102,7 +102,10 @@ simulator were to be released that takes card representations in a novel way, th
 generator from our abstract representation to that new format. This way both the programmer and the card game maker gain the benefit
 of interoperability.
 \subsection{Metrics and Measurement}
-Since the goals of DeckBuild are user-centric, the successfulness of our language can be measured using the quantified
+Design decisions and what features were relevant made during DeckBuild were derived from the process of usability. While we did not get
+ to a point to measure our language against the other software tools available, we conceptualized it in the following way so that one could
+ measure the effectiveness of our language if they chose to do so.
+Since the goals of DeckBuild are user-centric, the successfulness of our language could be measured using the quantified
 amount of effort it takes for the programmer to connect the output of the defined cards and rules to the runtime implementation of their
 choice. Reducing this effort can come about from meeting any of the following goals:
 \begin{itemize}
@@ -114,10 +117,13 @@ the card with a new system.
 \item Through good tool support and out-of-the-box functionality, we hope to abstract away most of the common
 boiler plate the programmer would want to write such as a generic card game simulator or client-server system.
 \end{itemize}
-For this initial implementation, we also measure the effectiveness in terms of the expressiveness that the card game designer gets
+For this initial implementation, we assert the effectiveness of our design in terms of the expressiveness that the card game designer gets
 without having to delegate tasks to their programmer. The card game designer should be able to use DeckBuild to give a non-ambiguous
 description of what she wants without necessarily having to tell the programmer in English.
 DeckBuild is therefore a success if one is able to describe any arbitrary cards from the
-official Dominion set. We hope to show that these aspects of our language are complete while still remaining robust enough to describe any
-new card. The observable metric of how robust DeckBuild is can be then seen as how well we minimize the amount of code the programmer has to
-write in using the runtime library when providing functionality for new cards.
+official Dominion set.
+\\
+We hope to someday show that these aspects of our language are complete while still remaining robust enough to describe any
+new card. The observable metric of Deckbuild's robustness can be seen as through minimizing the amount of code the programmer has to
+write when providing functionality for new cards. While we do not have concrete results on running tests against
+these metrics, a programmer can assess the effectiveness themselves from trying out the examples of our base set of standard dominion cards.
