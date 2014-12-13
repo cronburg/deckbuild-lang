@@ -1,0 +1,151 @@
+
+\section{Language Features}
+\label{sec:features}
+% 5. Describe the features your language provides and explain why this set of
+% features is appropriate.
+The current iteration of DeckBuild gives a game designer the
+following features:
+
+\begin{itemize}
+\item Declarative enumeration of the content of a card comprising its
+      \emph{name}, card \emph{type},
+      what the card does when played (\emph{effects}), and the \emph{cost}
+      of the card in order to buy it.
+\item Declarative enumeration of the parameters to the mechanics of a turn in
+      the game, namely the number
+      of \emph{actions} and \emph{buys} a player starts with on each turn,
+      the number of cards \emph{discarded} at the end of a turn, and the
+      number of cards \emph{drawn} in-between turns.
+\end{itemize}
+
+These features give game designers a way to quickly express new cards and
+game mechanics. This speed of prototyping new deckbuilding game variants
+facilitates the exploration process. Namely, a deckbuilding game designer
+will likely have a general idea what the cards should do, and have a
+feeling that they will interact well together. Coming up with specific
+numbers to put on the cards however requires \emph{exploring} the state
+space of possible cards.
+
+This process is indicative of what DeckBuild should give a game designer.
+Although this set of features leaves much to be desired (see Section
+\ref{sec:future} for full discussion), we believe it to be appropriate
+for our goals.
+
+See the last appendix for a complete grammar for DeckBuild.
+
+% TODO: figure out how to get RHS grammar indenting to work properly...
+%\subsection{Grammar}
+%\begin{footnotesize}
+%\begin{grammar}
+%\input{../grammar/grammar.tex}
+%\end{grammar}
+%\end{footnotesize}
+
+\subsection{Example Program}
+% 6. Show at least one sample program in your language and explain what it
+% does.
+
+\inputminted
+[ %frame=lines
+, framesep=2mm
+, fontsize=\footnotesize %\small %\tiny
+%, linenos
+] {haskell}{BaseQuote.hs}
+
+Above is a complete example program. The program defines ten cards and
+one turn mechanics declaration. The ten cards are parsed and then compiled
+into a Haskell function \mintinline{haskell}{kingdomCards :: [RuntimeCard]}.
+The ten cards are also parsed into an enumeration data type such as
+\mintinline{haskell}{VILLAGE :: CardName}. This in particular
+facilitates the use of host-language features of Haskell when designing
+cards with decidedly non-declarative effects (see
+Appendix \ref{appendix:complexcard} ) for an example).
+The turn declarations are parsed and compiled in the same manner as the
+card declarations, except they are compiled into a Haskell function
+\mintinline{haskell}{turnRules :: [Turn]}.
+
+% 7. Describe how you implemented the language.
+The compilation just described is performed using Haskell's quasiquotation
+facilities. As a result, the recommended programming pattern is to define
+a single \mintinline{haskell}{[deck| ... |]} quasiquoted program at the
+beginning of a Haskell module. The Haskell module is named based on why the cards in
+the module are being grouped together. For example, a deckbuilding game based
+on World War II might have a module named `WWII' containing cards named
+after airplanes used in World War II.
+
+The runtime system then imports this module that contains a complete deck of
+cards compiled from the DeckBuild program. Presently the runtime system can be
+interfaced with in three ways:
+
+\begin{itemize}
+\item As a Haskell backend API for performing probabilistic inference
+      on the possible states of the game given a model for the play
+      heuristics of two computer-players playing the game. This is where
+      the Machine Learning users (with Haskell experience) interested
+      in deckbuilding games can use DeckBuild.
+\item As a web socket API for designing web-based deckbuilding games.
+      This is where web programmers (with minimal to no Haskell experience)
+      can make use of DeckBuild to create a deck build game and corresponding
+      web site tailored to their genre of interest.
+\item As a command-line interface for humans to play against one another
+      (making use of the web sockets API). This is where a game designer can
+      have human subjects play-test their game without having to print out
+      mock-ups of cards.
+\end{itemize}
+
+% 8. Explain what if any services are provided in a “run-time system.”
+The runtime system itself is implemented as a Haskell cabal package separate
+from (but referencing / importing) the DeckBuild language package. It is
+implemented in the state monad for maintaining a stateful view of the game
+as turns progress. We also use the IO monad for executing
+player-based events in the game. The core components of the runtime system
+handle functionality common to all deckbuilding games comprising:
+
+\begin{itemize}
+\item Maintaining piles of cards
+  \begin{itemize}
+  \item Moving cards between decks (enforcing no `card-duplication-bugs')
+  \item 
+  \end{itemize}
+\item Library of:
+  \begin{itemize}
+  \item Getters and setters for \mintinline{haskell}{Game} state
+  \item Execution of common events:
+    \begin{itemize}
+    \item \mintinline{haskell}{draw     :: State Game ()}
+    \item \mintinline{haskell}{shuffle  :: State Game ()}
+    \item \mintinline{haskell}{discard  :: State Game ()}
+    \item \mintinline{haskell}{doPhase  :: State Game ()}
+    \item \mintinline{haskell}{takeTurn :: State Game ()}
+    \item \mintinline{haskell}{runGame  :: State Game ()}
+    \end{itemize}
+  \item Common \mintinline{haskell}{Game} state questions:
+    \begin{itemize}
+    \item How many cards of type `X' are in my hand?
+    \item Can I currently buy card `Y'?
+    \item Can I currently play card `Z'?
+    \item Has the game ended? If so, who won?
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+The use of Haskell as the host-language of DeckBuild gave the runtime system
+a lot of power in being able to make guarantees about the state of a game.
+In particular, the first-class nature of IO lets the runtime system divide
+up the portions of the system which are and are not allowed to perform IO.
+This division makes IO bugs impossible to create when designing and writing
+purely functional components of the runtime system. Similarly, the immutable
+nature of Haskell data instances makes shared-memory bugs impossible. This is
+important in DeckBuild's runtime system when communication occurs between the
+core components of the runtime system (functions inside the state monad)
+and the computer-player \& web socket components (and other components not
+allowed to directly alter the state of the game).
+
+In the current iteration of our language and the runtime system, certain
+concepts such as \mintinline{haskell}{ACTIONS} and \mintinline{haskell}{COINS}
+are hard-coded in the runtime system and in the language as concrete syntax.
+These names are not inherently common to all deckbuilding games, and will be
+abstracted out in a future iteration of the DeckBuild language. See Section
+\ref{sec:future} for a discussion of how this and other parts of the runtime
+system and language will be given better abstractions in the future.
+
