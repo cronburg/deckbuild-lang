@@ -1,7 +1,6 @@
 {-# LANGUAGE TypeSynonymInstances, TemplateHaskell, QuasiQuotes,
              MultiParamTypeClasses, FlexibleInstances, UndecidableInstances,
              DeriveDataTypeable, ScopedTypeVariables #-}
-
 module BaseQuote where
 
 -- Importing the following was the most convenient.
@@ -188,3 +187,4 @@ import Data.Typeable (Typeable)
         }
 
         |]
+

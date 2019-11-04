@@ -10,6 +10,7 @@ import Text.ParserCombinators.Parsec
 -- Until we figure out the better way to do it, if at all.
 import Language.DeckBuild.Syntax
 import Language.DeckBuild.Parser
+import qualified BaseQuote
 
 main = test
 
