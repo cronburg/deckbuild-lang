@@ -2,8 +2,6 @@
              MultiParamTypeClasses, FlexibleInstances, UndecidableInstances,
              DeriveDataTypeable, ScopedTypeVariables #-}
 
-module Examples.First where
-
 import System.IO.Unsafe (unsafePerformIO)
 import Test.HUnit hiding (test)
 import Text.ParserCombinators.Parsec
@@ -12,6 +10,8 @@ import Text.ParserCombinators.Parsec
 -- Until we figure out the better way to do it, if at all.
 import Language.DeckBuild.Syntax
 import Language.DeckBuild.Parser
+
+main = test
 
 -------------------------------------------------------------------------------
 -- Regression expects to be run from the Examples directory.

@@ -2,7 +2,7 @@
              MultiParamTypeClasses, FlexibleInstances, UndecidableInstances,
              DeriveDataTypeable, ScopedTypeVariables #-}
 
-module Examples.BaseQuote where
+module BaseQuote where
 
 -- Importing the following was the most convenient.
 -- Until we figure out the better way to do it, if at all.

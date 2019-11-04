@@ -137,10 +137,10 @@ data Phase = Phase
   } deriving (Eq, Typeable, Show, Ord)
 
 data PhaseInt = PhaseInt Int | All
-	deriving (Eq, Typeable, Show, Ord)
+  deriving (Eq, Typeable, Show, Ord)
 
 data PhaseName = ActionP  | BuyP  | DiscardP | DrawP
- 	deriving (Eq, Typeable, Show, Ord)
+  deriving (Eq, Typeable, Show, Ord)
 
 -- Do we need this? -- RLV
 -- qName :: QString -> String
